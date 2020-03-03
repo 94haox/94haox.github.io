@@ -1,0 +1,273 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>简单的 JS 与 原生交互实现上传图片的需求 | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="简单的 JS 与 原生交互实现上传图片的需求 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="前文
+近期由于公司业务发展的需求，个人从 iOS开发 转为 半iOS 半前端😂。
+没人带，只能自学，自学的坏处在于，有很多坑是要自己摔进去，再爬出来。
+ 
+需求
+将一个报修界面（类似于反馈）改版，并将新版界面的实现由原生迁移到H5。如下图..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              简单的 JS 与 原生交互实现上传图片的需求
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-04-08
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="前文">前文</h1>
+<p>近期由于公司业务发展的需求，个人从 iOS开发 转为 半iOS 半前端😂。<br>
+没人带，只能自学，自学的坏处在于，有很多坑是要自己摔进去，再爬出来。</p>
+<!-- more --> 
+<h1 id="需求">需求</h1>
+<p>将一个报修界面（类似于反馈）改版，并将新版界面的实现由原生迁移到H5。如下图<br>
+<img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fpkdfswwxdj30po19gwjb.jpg" alt="img" loading="lazy"></p>
+<p>现在的需求是，点击加号图片：</p>
+<ul>
+<li>调用系统拍照或者相册，然后将图片交给H5显示；</li>
+<li>并在H5接收到时，进行阿里云 <code>OSS</code> 直传；</li>
+</ul>
+<h1 id="实现">实现</h1>
+<h3 id="1-调用系统拍照或者相册然后将图片交给h5显示">1、调用系统拍照或者相册，然后将图片交给H5显示</h3>
+<p>已知的方法有两种：</p>
+<ol>
+<li>使用<code>&lt;input&gt;</code>标签，使用H5直接调用（在iOS上可以调用，但在Android上无法调用，Pass）</li>
+<li>使用 <code>JSBridge</code> 进行 js 与原生交互。</li>
+</ol>
+<p>现在的问题是选择一个兼容三端的JSBridge库（虽然原生都有方法进行交互，使用封装好的，更符合实际）。</p>
+<p>恰好前段时间在掘金看到 <a href="https://github.com/wendux/DSBridge-IOS/blob/master/readme-chs.md">DSBridge</a>，学习了一下，所以这次就直接拿过来用了。</p>
+<p>DSBridge 的使用，这里就不介绍了，可以直接点击👆的链接查看。</p>
+<p>大致代码如下：</p>
+<pre><code class="language-Objective-c">#JSAPI
+
+// js 调用原生
+- (NSString *)chooseImageFromMobile:(NSString *) msg {
+  // 使用block回调，通知Controller
+  if (self.chooseImage) {
+    self.chooseImage();
+  }
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+
+- (NSString *)showRepairPendding:(NSString *) msg {
+  [SVProgressHUD showWithStatus:@&quot;正在处理中...&quot;];
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+
+// 服务端返回请求错误时， js调用原生
+- (NSString *)showRepairError:(NSString *) msg {
+  [SVProgressHUD showImage:nil status:msg];
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+
+// 服务端返回报修成功时， js调用原生
+- (NSString *)showRepairSuccess:(NSString *) msg {
+  [SVProgressHUD dismiss];
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+</code></pre>
+<pre><code># ViewController
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+  @weakify(self)
+  self.repairApi.chooseImage = ^(){
+    @strongify(self)
+    [self changeHeader];
+  };
+    
+}
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    @weakify(self);
+  [picker dismissViewControllerAnimated:YES completion:^{
+    @strongify(self)
+    UIImage *icon = info[UIImagePickerControllerOriginalImage];
+    NSData *imgData = UIImageJPEGRepresentation(icon,0.1);
+    NSString *data = [imgData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    // 将data拼接成 img src 能识别的标志。
+    NSString *source = [NSString stringWithFormat:@&quot;data:image/png;base64,%@&quot;, data];
+    [self.webView callHandler:@&quot;addPicture&quot; arguments:@[source] completionHandler:^(id  _Nullable value) {
+      NSLog(@&quot;%@&quot;,value);
+    }];
+  }];
+}
+
+</code></pre>
+<p>接下来只要在 js 中调用 OC 中的方法就可以了</p>
+<pre><code class="language-JavaScript">
+// 注册	addPicture 方法，接受从 OC 传过来的参数
+dsBridge.register(&quot;addPicture&quot;, function(data) {
+		// TODO
+		// 从服务端获取直传 accessid 和 hosturl 等参数
+	  return data;
+});
+        
+</code></pre>
+<h1 id="总结">总结</h1>
+<p>这个需求的核心就是 JS 与 原生之间的交互，只要找对下手方向，那么剩下就是码代码了。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%89%8D%E6%96%87">前文</a></li>
+<li><a href="#%E9%9C%80%E6%B1%82">需求</a></li>
+<li><a href="#%E5%AE%9E%E7%8E%B0">实现</a><br>
+*
+<ul>
+<li><a href="#1-%E8%B0%83%E7%94%A8%E7%B3%BB%E7%BB%9F%E6%8B%8D%E7%85%A7%E6%88%96%E8%80%85%E7%9B%B8%E5%86%8C%E7%84%B6%E5%90%8E%E5%B0%86%E5%9B%BE%E7%89%87%E4%BA%A4%E7%BB%99h5%E6%98%BE%E7%A4%BA">1、调用系统拍照或者相册，然后将图片交给H5显示</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/yi-dui-yu-objective-c-lai-shuo-unit-testing-de-jie-zhi-shi-shi-me/">
+              <h3 class="post-title">
+                （译）对于 Objective-C 来说 Unit Testing 的价值是什么？
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

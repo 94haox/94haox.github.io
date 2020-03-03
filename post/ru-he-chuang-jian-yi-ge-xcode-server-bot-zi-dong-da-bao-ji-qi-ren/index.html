@@ -1,0 +1,249 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>如何创建一个 Xcode server Bot （自动打包机器人） | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="如何创建一个 Xcode server Bot （自动打包机器人） | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="如何创建一个 Xcode server Bot （自动打包机器人）
+概述
+为了解决平时生产过程中打包流程繁琐，打包分散，不同开发人员打包配置不同导致的包功能不全等问题。经过研究几种自动化打包方法，现决定使用苹果未开发人员提供的自动化打包方案..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              如何创建一个 Xcode server Bot （自动打包机器人）
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-06-17
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="如何创建一个-xcode-server-bot-自动打包机器人">如何创建一个 Xcode server Bot （自动打包机器人）</h1>
+<h2 id="概述">概述</h2>
+<p>为了解决平时生产过程中打包流程繁琐，打包分散，不同开发人员打包配置不同导致的包功能不全等问题。经过研究几种自动化打包方法，现决定使用苹果未开发人员提供的自动化打包方案，Xcode server 解决上述问题。</p>
+<h2 id="xcode-server-是什么">Xcode server 是什么？</h2>
+<p>Xcode Server，苹果提供了一个自带的 CI 方案，可以理解为 Jenkins 和 fastlane 的功能集合体，是一个持续化集成和打包测试工具。具体描述和功能，请自行百度/ google。</p>
+<h2 id="配置方法">配置方法</h2>
+<p>首先连接内网，原因是，版本管理是基于内网的 gitlab，而 Xcode server 依赖于 git 服务。</p>
+<p>然后打开 Xcode 选择左边功能栏的标识处</p>
+<figure data-type="image" tabindex="1"><img src="https://ws3.sinaimg.cn/large/006tNc79gy1g3ci8tchnpj30b5026aau.jpg" alt="" loading="lazy"></figure>
+<p>然后选择 SmartHome 的 Mac mini （Xcode server 服务提供机器）<br>
+这里是因为之前的配置已经完成，我直接省略了部署 Xcode server 步骤，有兴趣请自行了解😂</p>
+<figure data-type="image" tabindex="2"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cibgx6a2j309o08nwi8.jpg" alt="" loading="lazy"></figure>
+<p>然后选择 Create Bot</p>
+<figure data-type="image" tabindex="3"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cicw8rbnj309w0dvahp.jpg" alt="" loading="lazy"></figure>
+<p>第一步  输入 Bot 名字和部署 Xcode server 服务的机器（名字建议和版本分支关联，尽量详细一些）</p>
+<figure data-type="image" tabindex="4"><img src="https://ws3.sinaimg.cn/large/006tNc79gy1g3cinqgrfnj30kc0c0gnh.jpg" alt="" loading="lazy"></figure>
+<p>第二步 验证 git 服务的账号密码</p>
+<figure data-type="image" tabindex="5"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cioreubsj30kd0c040m.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cioreubsj30kd0c040m.jpg" alt="" loading="lazy"></figure>
+<p>第三步 选择想要自动打包的分支</p>
+<figure data-type="image" tabindex="7"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cipqvncij30kc0c343b.jpg" alt="" loading="lazy"></figure>
+<p>第四步 选择导出方式，这里选择自定义导出</p>
+<figure data-type="image" tabindex="8"><img src="https://ws1.sinaimg.cn/large/006tNc79gy1g3cir7u4jsj30kg0c0418.jpg" alt="" loading="lazy"></figure>
+<p>自定义导出需要一个 exportoption plist， 这个主要是告诉 server 本次打包的一些配置，例如打包方式，描述文件和证书配置之类的设定，<br>
+获取方式：手动导出一个 ipa 可以获取。</p>
+<figure data-type="image" tabindex="9"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3ciu0z7h9j30m70bmjso.jpg" alt="" loading="lazy"></figure>
+<p>第五步 选择打包频率<br>
+主要有三个选择，周期性，手动和检测到 commit<br>
+简单解释一下， 周期性顾名思义，可以设定在每天或者每个小时，或者每周打包；<br>
+手动就是，每次有需要时，由开发人员手动开启打包；<br>
+Commit 是每次检测到 当前集成分支有 commit 时，自动开启打包流程。<br>
+本次我们选择 <strong>周期性打包</strong>， 在每天的 9点，14点和 19点进行打包。</p>
+<figure data-type="image" tabindex="10"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3ciup6uv0j30kc0c0q67.jpg" alt="" loading="lazy"></figure>
+<p>第五步 选择为指定设备打包<br>
+可以选择仅为真实设备打包，或者为真实设备和模拟器一起打包，这里我们选择为真实设备打包（其实都可以😜）<br>
+<img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cj03o1mwj30ke0bz778.jpg" alt="" loading="lazy"></p>
+<p>第六步， 第七步 可以跳过，不需配置</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1g3cj2tyi5uj30kf0c2tax.jpg" alt="" loading="lazy"><br>
+<img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cj3isgw3j30ke0c0taw.jpg" alt="" loading="lazy"></p>
+<p>第八步  添加脚本<br>
+这个配置主要用来做一些额外操作，比如在打包前，我们可能需要更新下 pod，那么我们可以选择 Pre-integration 添加操作脚本，基于 bash；</p>
+<figure data-type="image" tabindex="11"><img src="https://ws1.sinaimg.cn/large/006tNc79gy1g3cj3rkjabj30kh0c6q5n.jpg" alt="" loading="lazy"></figure>
+<p>在本 Bot 中，我们需要打包完成后，自动将导出的 ipa 上传到内网 ipa 仓库；<br>
+所以选择 Post-integration，并添加以下脚本：</p>
+<pre><code class="language-bash">
+# 打印 ipa 路径 
+echo $XCS_PRODUCT
+
+# 苏宁智能 appId
+appId=&quot;8&quot;
+
+# 苏宁智能 versionId
+versionId=&quot;542&quot;
+
+# ipa 上传路径
+uploadUrl=&quot;xxxxxxx/upload.json&quot;
+
+# ipa 名称
+ipa_Name=&quot;Smarthome&quot;
+
+# ipa bundle_id
+bundle_id=&quot;com.suning.intelligence&quot;
+
+# 上传包到 ipa
+curl -F &quot;appId=${appId}&quot; -F &quot;versionId=${versionId}&quot; -F &quot;bundleId=${bundle_id}&quot; -F &quot;ipaDesc=${ipaName}&quot; -F &quot;ipaFile=@$XCS_PRODUCT&quot; ${uploadUrl}
+
+
+</code></pre>
+<figure data-type="image" tabindex="12"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cj8pu2r8j30kd0cr0vo.jpg" alt="" loading="lazy"></figure>
+<p>最终点击 Done 完成，配置完成后，会进行初次打包，可能会有各种检测，因此时间较长，大约 30min，除此之外，平均打包时间在 11min 之内（当然了，看配置）。</p>
+<h2 id="注意事项">注意事项</h2>
+<p>1、由于每次打包，Server 都会从集成分支拉去最新代码，所以我们需要保证提交代码时 bundleid 和证书配置需要为 release 配置</p>
+<figure data-type="image" tabindex="13"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cjdb6bwlj30zm0kltbs.jpg" alt="" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA-xcode-server-bot-%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85%E6%9C%BA%E5%99%A8%E4%BA%BA">如何创建一个 Xcode server Bot （自动打包机器人）</a>
+<ul>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a></li>
+<li><a href="#xcode-server-%E6%98%AF%E4%BB%80%E4%B9%88">Xcode server 是什么？</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95">配置方法</a></li>
+<li><a href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">注意事项</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/jin-qi-li-cheng-he-gan-wu/">
+              <h3 class="post-title">
+                近期历程和感悟
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

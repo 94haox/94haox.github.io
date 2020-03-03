@@ -1,0 +1,480 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>[译]在Swift中进行快速灵活的测试驱动开发 | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="[译]在Swift中进行快速灵活的测试驱动开发 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="
+
+原文地址：Test Driven Development (TDD) in Swift with Quick and Nimble
+原文作者：LAWRENCE TAN
+
+
+在移动开发领域，编写测试用例并不常见，事实上，大多数移动开发团队..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              [译]在Swift中进行快速灵活的测试驱动开发
+            </h2>
+            <div class="post-info">
+              <span>
+                2017-08-20
+              </span>
+              <span>
+                13 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <blockquote>
+<ul>
+<li>原文地址：<a href="https://www.appcoda.com/tdd-quick-nimble/">Test Driven Development (TDD) in Swift with Quick and Nimble</a></li>
+<li>原文作者：<a href="https://www.appcoda.com/author/lawrencetan/">LAWRENCE TAN</a></li>
+</ul>
+</blockquote>
+<p>在移动开发领域，编写测试用例并不常见，事实上，大多数移动开发团队为了加快开发速度，选择性的放弃了它。</p>
+<p>作为一个“成熟的”开发者，我尝到了编写测试用例的好处，它不仅仅能保证你的 app 的功能符合预期，它也能通过“锁住”你的代码来阻止其他开发者改变你的代码。而且测试代码和实现代码之间的联系也有助于新的开发者比较容易地理解和接手项目。</p>
+ <!-- more --> 
+<h2 id="测试驱动开发-tdd">测试驱动开发（ TDD ）</h2>
+<p><strong>测试驱动开发（ TDD ）</strong> 就像一个新的编码艺术。它遵守下面的递归循环：</p>
+<ul>
+<li>写一个能导致失败的测试用例</li>
+<li>为通过上述测试写一些代码</li>
+<li>重构</li>
+<li>重复上述操作，直到我们满意</li>
+</ul>
+<p>让我为你展示一个简单的例子，首先思考一下下面函数的实现：</p>
+<pre><code>func calculateAreaOfSquare(w: Int, h: Int) -&gt; Double { }
+</code></pre>
+<p><strong>测试 1:</strong><br>
+给两个数 <code>w=2</code>，<code>h=2</code>，预期的面积应该是 <code>4</code>。在这个例子中，这个测试会失败，因为这个函数目前并没有实现。</p>
+<p>接着我们继续写：</p>
+<pre><code>func calculateAreaOfSquare(w: Int, h: Int) -&gt; Double { return w * h }
+</code></pre>
+<p>测试 1 现在通过了！哇哦！</p>
+<p><strong>测试 2:</strong><br>
+给两个数 <code>w=-1</code>，<code>h=-1</code>，预期的面积应该是 <code>0</code>。在这个例子中，测试会失败，因为基于目前函数的实现，它会返回 <code>1</code>。</p>
+<p>让我们继续：</p>
+<pre><code>func calculateAreaOfSquare(w: Int, h: Int) -&gt; Double { 
+    if w &gt; 0 &amp;&amp; h &gt; 0 { 
+        return w * h 
+    } 
+    
+    return 0
+}
+</code></pre>
+<p>测试 2 现在也通过了！哇哦！</p>
+<p>这些操作可以继续下去，一直到你处理了所有的极限情况。接下来你就应该重构你的代码，在保证所有的测试用例都能通过的情况下，让它看起来更好。</p>
+<p>基于我们上面讨论的，我们意识到，TDD 不仅仅能让我们写出高质量的代码，它也能让我们更早的处理极限情况。另外它还能让两个开发者通过一个写测试用例，另一个写通过测试代码的方式来进行结对编程。你可以在 <a href="https://medium.com/@dotariel/5-reasons-i-love-test-driven-development-fc257d9093e2#.7eejsiuwg">Dotariel’s Blog Post</a> 找到更多有关于 TDD 的信息。</p>
+<h2 id="你会在本教程中学到什么">你会在本教程中学到什么？</h2>
+<p>在教程的结尾，你可以获得以下的知识：</p>
+<ul>
+<li>对 <strong>TDD 很棒</strong>，有一个基础的认知。</li>
+<li>对 <strong>Quick 和 Nimble 如何工作</strong>， 有一个基础的认知。</li>
+<li>知道如何使用 <strong>Quick 和 Nimble 进行 UI 测试</strong>。</li>
+<li>知道如何使用 <strong>Quick 和 Nimble 进行单元测试</strong>。</li>
+</ul>
+<h2 id="前期准备">前期准备</h2>
+<p>在我们继续下去之前，有些前期准备：</p>
+<ul>
+<li>Swift3 环境和 8.3.3 版本的 Xcode</li>
+<li>有 Swift 和 iOS 开发的经验。</li>
+</ul>
+<h2 id="配置我们的项目">配置我们的项目</h2>
+<p>假设我们要开发一个能够列出电影的简单的电影类 app 。 首先打开 Xcode 并创建一个叫做 <strong>MyMovies</strong> 的单视图应用。勾选上 <code>Unit Tests</code>，一旦我们配置好库和视图控制器，我们将重新访问这个目标。</p>
+<figure data-type="image" tabindex="1"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-1.png" alt="TDD Sample Project" loading="lazy"></figure>
+<p>下一步，删除已存在的 <code>ViewController</code> 并且重新创建一个继承于<code>UITableViewController</code> 的新类，把它命名为<code>MoviesTableViewController</code>。</p>
+<p>将 <code>Main.storyboard</code> 中的 <code>ViewController</code> 删除，将一个新的<code>UITableViewController</code> 拖进去，让它继承于<code>MoviesTableViewController</code>。</p>
+<p>然后，将 cell 的样式改为 <code>Subtitle</code>，并且将 identifier 改为 <code>MovieCell</code>，这样，我们后面就可以同时展示电影的标题和类型了。</p>
+<figure data-type="image" tabindex="2"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-3.png" alt="" loading="lazy"></figure>
+<p>不要忘了将这个视图控制器标记为 <code>initial view controller</code>。</p>
+<figure data-type="image" tabindex="3"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-5.png" alt="" loading="lazy"></figure>
+<p>这个时候，你的代码看上去应该像下面一样：</p>
+<pre><code>import UIKit
+ 
+class MoviesTableViewController: UITableViewController {
+ 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+        return 0
+    }
+}
+</code></pre>
+<h3 id="电影数据">电影数据</h3>
+<p>现在，我们需要造出一些电影数据，一会儿，我们需要它们去填充我们的视图。</p>
+<h4 id="genre-enum">Genre Enum</h4>
+<pre><code>enum Genre: Int {
+    case Animation
+    case Action
+    case None
+}
+</code></pre>
+<p>这个枚举用来标记电影的类别。</p>
+<h4 id="movie-struct">Movie Struct</h4>
+<pre><code>struct Movie {
+    var title: String
+    var genre: Genre
+}
+</code></pre>
+<p>这个电影数据类型用来描述我们需要的电影数据。</p>
+<pre><code>class MoviesDataHelper {
+    static func getMovies() -&gt; [Movie] {
+        return [
+            Movie(title: &quot;The Emoji Movie&quot;, genre: .Animation),
+            Movie(title: &quot;Logan&quot;, genre: .Action),
+            Movie(title: &quot;Wonder Woman&quot;, genre: .Action),
+            Movie(title: &quot;Zootopia&quot;, genre: .Animation),
+            Movie(title: &quot;The Baby Boss&quot;, genre: .Animation),
+            Movie(title: &quot;Despicable Me 3&quot;, genre: .Animation),
+            Movie(title: &quot;Spiderman: Homecoming&quot;, genre: .Action),
+            Movie(title: &quot;Dunkirk&quot;, genre: .Animation)
+        ]
+    }
+}
+</code></pre>
+<p>这个电影数据助手类可以帮助我们直接调用 <code>getMovies</code> 方法，所以我们可以在单次调用中就可以获得需要的数据。</p>
+<p>提醒一下，到目前为止，我们并没有在项目中做任何有关 TDD 的配置。现在，让我们开始学习这篇教程的主要内容 Quick 和 Nimble 吧！</p>
+<h2 id="quick-nimble">Quick &amp; Nimble</h2>
+<p><strong>Quick</strong> 是一个建立在 XCTest 上，为 Swift 和 Objective-C 设计的测试框架.<br>
+它通过 <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> 去编写非常类似于 <a href="https://github.com/rspec/rspec">RSpec</a> 的测试用例。</p>
+<p><strong>Nimble</strong> 就像是 <strong>Quick</strong> 的合作伙伴，它提供了匹配器作为断言。关于它的更多信息，请查看<a href="https://github.com/Quick/Quick">这儿</a></p>
+<h3 id="使用carthage-安装-quick-nimble">使用Carthage 安装 Quick &amp; Nimble</h3>
+<p>随着 Carthage 库的增长，相比 Cocoapods 我越来越喜欢 Carthage，因为它更去中心化。即使某一个库编译失败，整个项目依然可以编译成功</p>
+<pre><code>#CartFile.private
+github &quot;Quick/Quick&quot;
+github &quot;Quick/Nimble&quot;
+</code></pre>
+<p>上面就是 <code>CartFile.private</code> 中的内容，我通过它来安装依赖。如果你不熟悉 Carthage，先看看<a href="https://github.com/Carthage/Carthage">它</a>吧.</p>
+<p>将 <code>CartFile.private</code> 拖入你的项目目录，然后终端运行 <code>carthage update</code>。这个命令会克隆依赖，成功后，你可以在 <code>Carthage -&gt; Build -&gt; iOS</code> 找到它们。接着，将两个框架都添加到测试工程。你需要到 Build Phases 点击左上方的加号，并且选择 “New Copy Files Phase”。将它设置为 “Frameworks”，并且将两个框架都添加进去。</p>
+<p>现在所有的设置都搞定了！</p>
+<figure data-type="image" tabindex="4"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-6.png" alt="" loading="lazy"></figure>
+<h2 id="编写测试用例-1">编写测试用例 #1</h2>
+<p>让我们开始编写第一个测试用例。已知的是我们有一个列表，一些电影数据。那么，我们怎么保证列表视图显示正确项目个数？是的！我们需要保证列表视图的 cell 行数应该和电影数据的个数保持一致。这就是我们第一个需要测试的地方。那么开始吧！进到 <code>MyMoviesTests</code> 将 XCTest 代码全部删掉，并且将 Quick 和 Nimble 引入进来！</p>
+<p>我们必须保证我们的类是 <code>QuickSpec</code> 的子类，当然 <code>QuickSpec</code> 也是 <code>XCTestCase</code>的子类。要清楚的是 <code>Quick</code> 和 <code>Nimble</code> 仍然是基于 <code>XCTest</code> 的。<br>
+最后，我们还有一件事需要做，那就是需要重写 <code>spec()</code> 函数， 关于这点，你可以查看 <a href="https://github.com/Quick/Quick/blob/master/Documentation/en-us/QuickExamplesAndGroups.md">set of example groups and examples</a>.</p>
+<pre><code>import Quick
+import Nimble
+ 
+@testable import MyMovies
+ 
+class MyMoviesTests: QuickSpec {
+    override func spec() {
+    }
+}
+</code></pre>
+<p>这个时候，你需要明白我们将使用一些 <code>it</code>， <code>describe</code> 和 <code>context</code> 来编写我们的测试。<br>
+<code>describe</code> 和 <code>context</code> 只是 <code>it</code> 示例的逻辑分组。</p>
+<h3 id="测试-1-预计-列表视图的行数-电影数据的个数">测试 #1 – 预计 列表视图的行数 = 电影数据的个数</h3>
+<p>首先，引入我们的视图控制器</p>
+<pre><code>import Quick
+import Nimble
+ 
+@testable import MyMovies
+ 
+class MyMoviesTests: QuickSpec {
+    override func spec() {
+        var subject: MoviesTableViewController!
+        
+        describe(&quot;MoviesTableViewControllerSpec&quot;) {
+            beforeEach {
+                subject = UIStoryboard(name: &quot;Main&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;MoviesTableViewController&quot;) as! MoviesTableViewController
+                
+                _ = subject.view
+            }
+        }
+    }
+}
+</code></pre>
+<p>需要注意的是，我们有一个对 <code>MyMovies</code> 的 <code>@testable</code> 引用，这行代码的目的是标记着我们在测试哪个项目，并且允许我们引用那里的类。由于我们需要测试控制器的视图层，所以需要从 storyboard 抓取一个实例。</p>
+<p><strong>describe</strong> 闭包开始了我的第一个为<code>MoviesTableViewController</code>而写的组合测试用例。</p>
+<p><strong>beforeEach</strong> 闭包将在在 <strong>describe</strong> 闭包中所有例子执行之前运行。所以你可以在其中写一些需要在 <code>MoviesTableViewController</code> 执行时首先运行的测试。</p>
+<p><code>_ = subject.view</code> 会将视图控制器放入内存，它类似于调用 <code>viewDidLoad</code>。</p>
+<p>最后，我们可以在 <code>beforeEach { }</code> 之后添加测试断言。比如：</p>
+<pre><code>context(&quot;when view is loaded&quot;) {
+    it(&quot;should have 8 movies loaded&quot;) {
+        expect(subject.tableView.numberOfRows(inSection: 0)).to(equal(8))
+   }
+}
+</code></pre>
+<p>让我们一步步来看。首先，我们有一个被标记为 <code>when view is loaded</code> 组合示例闭包 <code>context</code>；接着，我们还有一个主要的示例 <code>it should have 8 movies loaded</code>；然后，我们预计或者断言列表视图的 cell 有 8 行。通过按 CMD+U 或者 Product -&gt; Test 运行测试用例，然后你会在控制面板上看到下面信息：</p>
+<pre><code>MoviesTableViewController__when_view_is_loaded__should_have_8_movies_loaded] : expected to equal &lt;8&gt;, got &lt;0&gt;
+ 
+Test Case '-[MyMoviesTests.MoviesTableViewControllerSpec MoviesTableViewController__when_view_is_loaded__should_have_8_movies_loaded]' failed (0.009 seconds).
+</code></pre>
+<p>所以，你只是写了一个并不完善的测试用例。开始 TDD 吧！</p>
+<h2 id="完善测试用例-1">完善测试用例 #1</h2>
+<p>现在，回到 <code>MoviesTableViewController</code>，加载电影数据！ 然后再重新运行测试用例，接着，之前写的测试用例通过了！</p>
+<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+    return MoviesDataHelper.getMovies().count
+}
+ 
+override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: &quot;MovieCell&quot;)
+    return cell!
+}
+</code></pre>
+<p>总结一下，首先你写了一个不完善的测试，然后通过 3 行代码完善了它，并且测试通过了，这就是为什么我们将它称为测试驱动开发（TDD），一个能确保代码良好和高质量的方式。</p>
+<h2 id="编写测试用例-2">编写测试用例 #2</h2>
+<p>现在，是时候用第二个测试用例来结束这个教程了。<br>
+我们意识到，当我们运行 app 的时候，我们只是在每个地方设置 “title” 和 “subtitle”。但是我们并没有验证它显示的是不是我们实际的数据！所以，为 UI 也写个测试用例吧。</p>
+<p>进入 spec 文件。 添加一个新的 <code>context</code> 并把它称为 <code>Table View</code>。从 列表视图抓取第一个 cell ，并且测试它展示的数据是否和实际应该展示的数据相同。</p>
+<pre><code>context(&quot;Table View&quot;) {
+    var cell: UITableViewCell!
+    
+    beforeEach {
+            cell = subject.tableView(subject.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
+    }
+        
+    it(&quot;should show movie title and genre&quot;) {
+        expect(cell.textLabel?.text).to(equal(&quot;The Emoji Movie&quot;))
+        expect(cell.detailTextLabel?.text).to(equal(&quot;Animation&quot;))
+     }
+}
+</code></pre>
+<p>测试运行后，会得到下面的失败信息。</p>
+<pre><code>MoviesTableViewController__Table_View__should_show_movie_title_and_genre] : expected to equal &lt;Animation&gt;, got &lt;Subtitle&gt;
+</code></pre>
+<p>来吧，让我们通过给 cell 相应的数据去展示来完善这个测试用例！</p>
+<h2 id="完善测试用例-2">完善测试用例 #2</h2>
+<p>因为 Genre 是枚举，我们需要为它添加不同的描述。所以我们需要更新 <code>Movie</code> 类：</p>
+<pre><code>struct Movie {
+    var title: String
+    var genre: Genre
+    
+    func genreString() -&gt; String {
+        switch genre {
+        case .Action:
+            return &quot;Action&quot;
+        case .Animation:
+            return &quot;Animation&quot;
+        default:
+            return &quot;None&quot;
+        }
+    }
+}
+</code></pre>
+<p>同样 <code>cellForRow</code> 方法也需要更新：</p>
+<pre><code>override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: &quot;MovieCell&quot;)
+    
+    let movie = MoviesDataHelper.getMovies()[indexPath.row]
+    cell?.textLabel?.text = movie.title
+    cell?.detailTextLabel?.text = movie.genreString()
+    
+    return cell!
+}
+</code></pre>
+<p>哇哦！第二个测试用例通过啦！此时，让我们看看能不能通过重构让代码更加清晰，当然，仍然是在保持测试用例可以通过的基础上。移除空函数，并且将 <code>getMovies()</code> 声明为计算属性。</p>
+<pre><code>class MoviesTableViewController: UITableViewController {
+ 
+    var movies: [Movie] {
+        return MoviesDataHelper.getMovies()
+    }
+    
+    // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+        return movies.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: &quot;MovieCell&quot;)
+        
+        let movie = movies[indexPath.row]
+        cell?.textLabel?.text = movie.title
+        cell?.detailTextLabel?.text = movie.genreString()
+        
+        return cell!
+    }
+}
+</code></pre>
+<p>试试吧，重新运行测试，它依然是可以通过的。</p>
+<h2 id="总结">总结</h2>
+<p>我们做了什么？</p>
+<ul>
+<li>我们为了检测电影数量，编写了第一个测试用例，测试 <em>未通过</em></li>
+<li>接着我们实现了加载电影的逻辑，然后测试 <em>通过</em></li>
+<li>为了检测是否显示了正确的数据，我们编写了第二个测试，测试 <em>未通过</em></li>
+<li>接着我们实现了显示逻辑，然后测试 <em>通过</em></li>
+<li>最后我们停止了测试，并且进行了 <em>重构</em></li>
+</ul>
+<p>这大概就是 TDD 的全部。你也可以在这个工程上去进行更多的尝试。如果你对教程有任何相关问题，请在下面留下相关评论以便让我知道。</p>
+<p>你可以在这找到相关<a href="https://github.com/lawreyios/MyMovies">源码</a></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91-tdd">测试驱动开发（ TDD ）</a></li>
+<li><a href="#%E4%BD%A0%E4%BC%9A%E5%9C%A8%E6%9C%AC%E6%95%99%E7%A8%8B%E4%B8%AD%E5%AD%A6%E5%88%B0%E4%BB%80%E4%B9%88">你会在本教程中学到什么？</a></li>
+<li><a href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87">前期准备</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%88%91%E4%BB%AC%E7%9A%84%E9%A1%B9%E7%9B%AE">配置我们的项目</a>
+<ul>
+<li><a href="#%E7%94%B5%E5%BD%B1%E6%95%B0%E6%8D%AE">电影数据</a>
+<ul>
+<li><a href="#genre-enum">Genre Enum</a></li>
+<li><a href="#movie-struct">Movie Struct</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#quick-nimble">Quick &amp; Nimble</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8carthage-%E5%AE%89%E8%A3%85-quick-nimble">使用Carthage 安装 Quick &amp; Nimble</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-1">编写测试用例 #1</a>
+<ul>
+<li><a href="#%E6%B5%8B%E8%AF%95-1-%E9%A2%84%E8%AE%A1-%E5%88%97%E8%A1%A8%E8%A7%86%E5%9B%BE%E7%9A%84%E8%A1%8C%E6%95%B0-%E7%94%B5%E5%BD%B1%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%AA%E6%95%B0">测试 #1 – 预计 列表视图的行数 = 电影数据的个数</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%8C%E5%96%84%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-1">完善测试用例 #1</a></li>
+<li><a href="#%E7%BC%96%E5%86%99%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-2">编写测试用例 #2</a></li>
+<li><a href="#%E5%AE%8C%E5%96%84%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-2">完善测试用例 #2</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/li-yong-runtime-zuo-fang-beng-kui-chu-li/">
+              <h3 class="post-title">
+                利用 Runtime 做防崩溃处理
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,314 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>探究 Runloop  | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="探究 Runloop  | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="探究 Runloop
+
+对于 iOS 开发者来说， Runloop 应该是大家都熟悉的，这篇文章只是本人在阅读源码时的一些理解。
+
+ 
+Runloop 相关结构体
+Objective-C 是对 C 的封装，所以一切相关的底层其实都是通过 C..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              探究 Runloop 
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-06-17
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="探究-runloop">探究 Runloop</h1>
+<blockquote>
+<p>对于 iOS 开发者来说， Runloop 应该是大家都熟悉的，这篇文章只是本人在阅读源码时的一些理解。</p>
+</blockquote>
+<!-- more --> 
+<h3 id="runloop-相关结构体">Runloop 相关结构体</h3>
+<p>Objective-C 是对 C 的封装，所以一切相关的底层其实都是通过 C 来实现的，我们先看下 Runloop 相关的概念。<br>
+这里说的 Runloop 并不是 Apple 在 iOS 中的实现，因为 iOS 不是开源的。我们现在所说的其实只是 Apple 开源的 CF 框架的源码，但是管中窥豹，通过它也能了解 Apple 的思路。</p>
+<h4 id="__cfrunloop">__CFRunLoop</h4>
+<p>首先是 Runloop，底层是 C 的结构体</p>
+<pre><code class="language-C">struct __CFRunLoop {
+    __CFPort _wakeUpPort;			// used for CFRunLoopWakeUp 
+    volatile _per_run_data *_perRunData;   // 预设状态
+    pthread_t _pthread; // 线程
+    CFMutableSetRef _commonModes; // 存储 ModeName
+    CFMutableSetRef _commonModeItems; 
+    CFRunLoopModeRef _currentMode; // 当前 Mode
+    CFMutableSetRef _modes;  // 所有的 Mode
+    ...
+};
+</code></pre>
+<p>上面列出的是相对重要的部分， 我们一个一个看。没有细说的注意看代码块中的注释<br>
+首先 <strong>_wakeUpPort</strong> 这是用来进行唤醒 Runloop 的特定端口；<br>
+然后是 <strong>_perRunData</strong> 这个需要结合下面代码来看：</p>
+<pre><code class="language-C">// 是否是 停止状态
+CF_INLINE Boolean __CFRunLoopIsStopped(CFRunLoopRef rl) {
+    return (rl-&gt;_perRunData-&gt;stopped) ? true : false;
+}
+
+// 标记为停止状态
+CF_INLINE void __CFRunLoopSetStopped(CFRunLoopRef rl) {
+    rl-&gt;_perRunData-&gt;stopped = 0x53544F50;	// 'STOP'
+}
+
+...
+
+</code></pre>
+<p>可以看到，runloop 的很多状态都是存储在 <strong>_perRunData</strong> 之中的，我们可以把它看做是 runloop 的状态指示器。</p>
+<p><strong>_pthread</strong> 的类型是 <strong>pthread_t</strong> ，这是 pthread 的底层，这样也说明了，为什么线程和 <strong>runloop</strong> 是一一对应的；</p>
+<p><strong>_commonModes</strong> 这是一个集合， 主要存储着 modename；</p>
+<p><strong>_commonModeItems</strong> 也是一个集合， 主要存储着 modename 对应的 <strong>CFRunLoopModeRef</strong> 中的 Source/Observer/Timer；</p>
+<h4 id="cfrunloopmoderef">CFRunLoopModeRef</h4>
+<p>通过 Runloop 的结构体，我们可以看到，<strong>CFRunLoopModeRef</strong> 在其中占据很大的比例，那么我们继续看 <strong>CFRunLoopModeRef</strong> 是什么东西：</p>
+<pre><code class="language-C">struct __CFRunLoopMode {
+    CFStringRef _name;
+    CFMutableSetRef _sources0;
+    CFMutableSetRef _sources1;
+    CFMutableArrayRef _observers;
+    CFMutableArrayRef _timers;
+    ...
+};
+</code></pre>
+<p>很长一段，我只贴出来一部分，其他可以看源码。可以看到也是一个结构体（其实所有OC类的底层实现都是C中的结构体）。</p>
+<p>在这其中，其实就是三类成员，<strong>__CFRunLoopSource</strong>， <strong>__CFRunLoopObserver</strong> 和 <strong>__CFRunLoopTimer</strong>。</p>
+<p>它们的关系可以看这幅图，比较直观：<br>
+<img src="https://blog.ibireme.com/wp-content/uploads/2015/05/RunLoop_0.png" alt="" loading="lazy"></p>
+<p>那么继续，我们在聊聊这三个家伙是个啥。</p>
+<h4 id="__cfrunloopsource">__CFRunLoopSource</h4>
+<p>Mode 结构体中 source 有两个版本，一个source0，一个source1。<br>
+先说下，source 是什么，runloop 中，需要一个标识来告诉它，是否有事件需要处理，然而单纯的使用一个标识符无法实现比较复杂的需求，这时候 source 就出现了，通过调用方法，来得到一个 BOOL 值，通过这个值来确定是否需要处理事件。</p>
+<p>为什么这么说？我们需要看下这个方法：</p>
+<pre><code>	static int32_t __CFRunLoopRun(CFRunLoopRef rl, CFRunLoopModeRef rlm, CFTimeInterval seconds, Boolean stopAfterHandle, CFRunLoopModeRef previousMode){
+			...
+			Boolean sourceHandledThisLoop = __CFRunLoopDoSources0(rl, rlm, stopAfterHandle);
+	    if (sourceHandledThisLoop) {
+            __CFRunLoopDoBlocks(rl, rlm);
+	    }
+			...
+			
+			sourceHandledThisLoop = __CFRunLoopDoSource1(rl, rlm, rls, msg, msg-&gt;msgh_size, &amp;reply) || sourceHandledThisLoop;
+	    sourceHandledThisLoop = __CFRunLoopDoSource1(rl, rlm, rls) || sourceHandledThisLoop;
+			...
+	
+	}
+	
+</code></pre>
+<p>这是 Runloop 启动方法，后面会仔细分析，现在主要看贴出来的方法。</p>
+<p>可以看到，runloop 处理事件主要是通过三个方法：<br>
+<strong>__CFRunLoopDoSources0</strong> ， <strong>__CFRunLoopDoSource1</strong> 和 <strong>__CFRunLoopDoBlocks</strong>。</p>
+<p>前两个是用来标志是否存在需要处理的事件，如果存在，则调用第三个方法，处理事件。</p>
+<p>Source 也分为2个版本 Source0 和 Source1。</p>
+<p>• <strong>Source0</strong> 只包含了一个回调（函数指针），它并不能主动触发事件。使用时，你需要先调用 CFRunLoopSourceSignal(source)，将这个 Source 标记为待处理，然后手动调用 CFRunLoopWakeUp(runloop) 来唤醒 RunLoop，让其处理这个事件。</p>
+<p>• <strong>Source1</strong> 包含了一个 mach_port 和一个回调（函数指针），这种 Source 能主动唤醒 RunLoop 的线程。</p>
+<h4 id="cfrunlooptimerref">CFRunLoopTimerRef</h4>
+<p><strong>CFRunLoopTimerRef</strong> 就很好理解了，它实际上是和 NSTimer 是同一个东西，也就是说，它就是一个定时器。这里简单介绍一下，后面计划有一篇关于 <strong>NSTimer</strong> 的文章。</p>
+<pre><code class="language-C">
+struct __CFRunLoopTimer {
+    CFRunLoopRef _runLoop;
+    CFMutableSetRef _rlModes;
+    CFTimeInterval _interval;		/* immutable */
+    CFTimeInterval _tolerance;          /* mutable */
+    CFAbsoluteTime _nextFireDate;
+    CFIndex _order;			/* immutable */
+    CFRunLoopTimerCallBack _callout;	/* immutable */
+    ...
+};
+
+</code></pre>
+<p>看上面的结构， <strong>__CFRunLoopTimer</strong> 主要包含下列相关：</p>
+<p><strong>_runLoop</strong>：NSTimer 必须和 runloop 配合使用，那么 timer 持有 runloop 是可以理解咯；<br>
+<strong>_interval</strong>： 间隔时间；<br>
+<strong>_tolerance</strong>： 容忍时间，也就是说允许延迟多长时间；<br>
+<strong>_nextFireDate</strong>：下次触发时间，理论上应该每次累加 _interval ，但是由于容忍度的存在，并不能两次相隔时间并不一定和 _interval 相等；<br>
+<strong>_order</strong>： 优先级；<br>
+<strong>_callout</strong>：timer 关联的回调事件；</p>
+<h4 id="__cfrunloopobserver">__CFRunLoopObserver</h4>
+<pre><code class="language-C">    struct __CFRunLoopObserver {
+    CFRunLoopRef _runLoop;
+    CFIndex _rlCount;
+    CFOptionFlags _activities;		/* immutable */
+    CFIndex _order;			/* immutable */
+    CFRunLoopObserverCallBack _callout;	/* immutable */
+};
+</code></pre>
+<p><strong>__CFRunLoopObserver</strong> 中除了常规的几个成员外， 比较重要的应该就是 <strong>_activities</strong> ， 它标识了 runloop 的状态，主要包括</p>
+<pre><code class="language-C">typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
+    kCFRunLoopEntry = (1UL &lt;&lt; 0),               // 即将进入 Loop
+    kCFRunLoopBeforeTimers = (1UL &lt;&lt; 1),        // 即将处理 Timers
+    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2),       // 即将处理 Sources
+    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5),       // 即将进入休眠
+    kCFRunLoopAfterWaiting = (1UL &lt;&lt; 6),        // 刚从休眠中唤醒
+    kCFRunLoopExit = (1UL &lt;&lt; 7),                // 即将退出Loop
+    kCFRunLoopAllActivities = 0x0FFFFFFFU
+};
+
+</code></pre>
+<p>通过这些状态，我们可以判断出 Loop 正处于什么状态，并且可以根据状态不同而做相应的事件，比如监听 <code>kCFRunLoopBeforeWaiting</code>， 在这将在异步线程渲染好的UI在主线程进行更新，从而避免出现主线程阻塞，增加页面流畅度等等。</p>
+<p>好了，相关的结构体已经介绍完</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%8E%A2%E7%A9%B6-runloop">探究 Runloop</a><br>
+*
+<ul>
+<li><a href="#runloop-%E7%9B%B8%E5%85%B3%E7%BB%93%E6%9E%84%E4%BD%93">Runloop 相关结构体</a>
+<ul>
+<li><a href="#__cfrunloop">__CFRunLoop</a></li>
+<li><a href="#cfrunloopmoderef">CFRunLoopModeRef</a></li>
+<li><a href="#__cfrunloopsource">__CFRunLoopSource</a></li>
+<li><a href="#cfrunlooptimerref">CFRunLoopTimerRef</a></li>
+<li><a href="#__cfrunloopobserver">__CFRunLoopObserver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/5-yue-mian-shi-zong-jie/">
+              <h3 class="post-title">
+                5月面试总结
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

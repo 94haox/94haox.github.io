@@ -1,0 +1,267 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>数据结构学习笔记--静态链表、循环链表、双循环链表 | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="数据结构学习笔记--静态链表、循环链表、双循环链表 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="静态链表
+
+用数组描述的链表叫做静态链表；
+
+数组的元素由两部分组成， data 和 cur， data 存储数据；cur 存储该元素的后继在数组中的下标（类似单链表中的 next 指针）；
+数据元素类似下面结构体
+
+typedef str..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              数据结构学习笔记--静态链表、循环链表、双循环链表
+            </h2>
+            <div class="post-info">
+              <span>
+                2015-03-24
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h3 id="静态链表">静态链表</h3>
+<blockquote>
+<p>用数组描述的链表叫做静态链表；</p>
+</blockquote>
+<p>数组的元素由两部分组成， data 和 cur， data 存储数据；cur 存储该元素的后继在数组中的下标（类似单链表中的 next 指针）；<br>
+数据元素类似下面结构体</p>
+<!-- more -->
+<pre><code>typedef struct{
+ElemType data; 
+int cur;
+} Componet,StaticLinkList[MAXSIZE];
+</code></pre>
+<h4 id="备用链表">备用链表</h4>
+<ul>
+<li>数组中未使用的数组元素；</li>
+<li>数组的第一个元素，即下标为 0 的元素的 cur 就存放备用链表的第一个结点下标，而数组的最后一个元素的 cur 则存放第一个有数值的元素的下标，相当于单链表中的头结点的作用，当链表为空时，为 0；</li>
+</ul>
+<h4 id="静态链表的插入操作">静态链表的插入操作</h4>
+<p>如下图所示；</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNbRwgy1fdt8yg1k72j30c501lmxg.jpg" alt="" loading="lazy"><br>
+初始链表 <img src="https://ww4.sinaimg.cn/large/006tNbRwgy1fdt8wbvrbej30er03i0tc.jpg" alt="" loading="lazy"><br>
+插入操作</p>
+<p>将丙插入乙和丁之间；</p>
+<ul>
+<li>将元素丙添加到备用链表；</li>
+<li>将乙的 cur 改为 丙的游标；</li>
+<li>将丙的 cur 改为 丁的游标；</li>
+</ul>
+<h4 id="静态链表的优缺点">静态链表的优缺点；</h4>
+<p>1、优点</p>
+<ul>
+<li>在插入和删除操作时，只需要修改游标，不需要移动元素，从而改进了在顺序存储结构中的插入和删除操作需要移动大量元素的缺点；</li>
+</ul>
+<p>2、缺点</p>
+<ul>
+<li>没有解决连续存储分配带来的表长难以确定的问题；</li>
+<li>失去了顺序存储结构随机存取的特性；</li>
+</ul>
+<h3 id="循环链表">循环链表</h3>
+<blockquote>
+<p>将单链表中终端结点的指针端由空指针改为指向头结点，就使整个单链表形成一个环，这种头尾相接的单链表称为单循环链表；简称循环链表；</p>
+</blockquote>
+<ul>
+<li>尾指针： rear；</li>
+<li>开始结点： rear-&gt;next-&gt;next;</li>
+</ul>
+<h4 id="双向链表">双向链表</h4>
+<blockquote>
+<p>在单向链表的每个链表结点中</p>
+</blockquote>
+<p>每一个链表元素结构类似下面</p>
+<pre><code>typedef struct{
+ElemType data;
+struct DuLNode *prior   /* 直接前驱指针*/;
+struct DuLNode  *next;  /*直接后驱指针 */
+}DuLNode, *DuLinkList
+</code></pre>
+<p><img src="https://ww3.sinaimg.cn/large/006tNbRwgy1fdtacebgb1j30gm03vgm3.jpg" alt="" loading="lazy"><br>
+非空的循环带头结点的双向链表</p>
+<h4 id="双向链表的插入操作">双向链表的插入操作</h4>
+<p>假设存储元素 e 的结点为 s，要实现将结点 s 插入到结点 p 与 p-&gt;next 之间；<br>
+算法思路：</p>
+<pre><code>s-&gt;prior = p;  /*把p赋值给s的前驱*/
+s-&gt;next = p-&gt;next; /*把p-&gt;next赋值给s-&gt;next*/
+p-&gt;next-&gt;prior = s; /*将s赋值给p-&gt;next的前驱*/
+p-&gt;next = s; /*将s赋值给p-&gt;next*/
+</code></pre>
+<h4 id="双向链表的删除操作">双向链表的删除操作</h4>
+<pre><code>p-&gt;prior-&gt;next = p-&gt;next;   /*把p-&gt;next 赋值给p-&gt;prior的后继*/
+p-&gt;next-&gt;prior = p-&gt;prior;  /*把p-&gt;prior赋值给p-&gt;next 的前驱*/
+free(p);
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E9%9D%99%E6%80%81%E9%93%BE%E8%A1%A8">静态链表</a>
+<ul>
+<li><a href="#%E5%A4%87%E7%94%A8%E9%93%BE%E8%A1%A8">备用链表</a></li>
+<li><a href="#%E9%9D%99%E6%80%81%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C">静态链表的插入操作</a></li>
+<li><a href="#%E9%9D%99%E6%80%81%E9%93%BE%E8%A1%A8%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9">静态链表的优缺点；</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E9%93%BE%E8%A1%A8">循环链表</a>
+<ul>
+<li><a href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8">双向链表</a></li>
+<li><a href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E7%9A%84%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C">双向链表的插入操作</a></li>
+<li><a href="#%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E7%9A%84%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C">双向链表的删除操作</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/shu-ju-jie-gou-xue-xi-bi-ji-shun-xu-cun-chu-he-dan-lian-biao/">
+              <h3 class="post-title">
+                数据结构学习笔记--顺序存储和单链表
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

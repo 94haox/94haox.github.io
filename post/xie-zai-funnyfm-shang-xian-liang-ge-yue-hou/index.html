@@ -1,0 +1,230 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>写在 FunnyFM 上线两个月后 | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="写在 FunnyFM 上线两个月后 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="写在 FunnyFM 上线两个月后
+FunnyFM 是一款实用的 Podcast 客户端。
+
+它被我立项的原因是 iOS 自带的 Podcast 客户端在添加多个泛用型 RSS 播客后会非常的卡顿，在我的主力机 iPhoneX 上必现卡死。..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              写在 FunnyFM 上线两个月后
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-10-11
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="写在-funnyfm-上线两个月后">写在 FunnyFM 上线两个月后</h1>
+<p>FunnyFM 是一款实用的 Podcast 客户端。</p>
+<!-- more -->
+<p>它被我立项的原因是 iOS 自带的 Podcast 客户端在添加多个泛用型 RSS 播客后会非常的卡顿，在我的主力机 iPhoneX 上必现卡死。所以我萌发了自己做一款好用，流畅的 Podcast 客户端。</p>
+<h2 id="开发周期">开发周期</h2>
+<p>FunnyFM 仓库的创建是在 18年的11月9号，正式上线时间是在19年的8月14号。时间跨度非常的长。<br>
+主要原因有几个：<br>
+1、初期没有上线计划，纯粹自娱自乐；<br>
+2、有上线计划后，功能过于简单，UI过于简陋，没有上线欲望；<br>
+3、UI 基本靠自己画；<br>
+4、将 rss 的解析由本地迁移到服务端，也就是说，自己承担了产品，UI，后端，iOS开发这4个角色；<br>
+5、期间由于公司有个大的需求，开发时间较少。</p>
+<h2 id="技术选型">技术选型</h2>
+<h4 id="app-端">App 端</h4>
+<p>这个没什么好说的，基于学习的原因，选择使用了 Swift， 本身没有上线 Android 平台的计划，所以并没有考虑混合开发，虽然 flutter 很🔥。</p>
+<h4 id="后端">后端</h4>
+<p>这个也没啥可说的，主要决定用 node.js,  选型主要是在几个框架中选择。经过比较后，egg.js 成为我的选择，原因主要是阿里开源，在阿里内部有使用，插件较多，在国内使用者比较多。</p>
+<h4 id="前端">前端</h4>
+<p>我爱 Vue。</p>
+<h4 id="设计工具">设计工具</h4>
+<p>Sketch ， &quot;灵感&quot;来源 Dribbble 😂。</p>
+<h4 id="遇到的困难">遇到的困难</h4>
+<p>1、需求变动<br>
+由于初期并没有详细的规划，所以需求变动较快，也比较大，总想做一个成熟的版本一次性上架。</p>
+<p>2、设计变动<br>
+本身并不专业，只能在没有版权的作品中进行部分调整。多个模块有多次 UI 变动。</p>
+<p>3、服务端<br>
+起初的设想只是有一个账户系统，用来同步不同设备中的订阅功能。后续又添加了推送服务，推送服务又牵扯到 RSS 的抓取和判别，在加上最近计划的订阅服务，还有权限问题。</p>
+<p>4、移动端<br>
+目前在做的分享页，需要添加接口，也增加了工作量。</p>
+<p>5、宣传<br>
+完全没有做，只在 V2EX 发了一个贴😂。</p>
+<h4 id="后期计划">后期计划</h4>
+<p>目前已经更新 9 个版本，两个月内，平均一周一个版本，有时候更短，主要是由于缺乏测试，在收到崩溃报告时，需要快速解决和上架💔。</p>
+<p>目前是买断制，正在计划转为订阅制。</p>
+<p>正在进行的和后续的计划有：</p>
+<p>分享功能，分享页。<br>
+官方通知系统。<br>
+订阅系统和账号系统关联。<br>
+用户等级的划分。<br>
+泛用型播客源的自主添加。<br>
+添加推送页。</p>
+<h4 id="总结">总结</h4>
+<p>通过这篇文章来记录 FunnyFM 的前世今生，也记录一下全栈开发的艰辛，独立开发者是真的辛苦！</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%86%99%E5%9C%A8-funnyfm-%E4%B8%8A%E7%BA%BF%E4%B8%A4%E4%B8%AA%E6%9C%88%E5%90%8E">写在 FunnyFM 上线两个月后</a>
+<ul>
+<li><a href="#%E5%BC%80%E5%8F%91%E5%91%A8%E6%9C%9F">开发周期</a></li>
+<li><a href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B">技术选型</a><br>
+*
+<ul>
+<li><a href="#app-%E7%AB%AF">App 端</a></li>
+<li><a href="#%E5%90%8E%E7%AB%AF">后端</a></li>
+<li><a href="#%E5%89%8D%E7%AB%AF">前端</a></li>
+<li><a href="#%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7">设计工具</a></li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E5%9B%B0%E9%9A%BE">遇到的困难</a></li>
+<li><a href="#%E5%90%8E%E6%9C%9F%E8%AE%A1%E5%88%92">后期计划</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/app-de-yi-ci-qi-dong-you-hua/">
+              <h3 class="post-title">
+                 APP 的一次启动优化
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

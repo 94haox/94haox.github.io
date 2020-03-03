@@ -1,0 +1,332 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>使用Scrapy结合MongoDB爬取最美应用数据 | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="使用Scrapy结合MongoDB爬取最美应用数据 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="
+又开新坑了，最近迷上了爬虫，塞尔达，数据结构。。。时间不够用了已经。
+
+近几天简单的学习了 Scrapy 这个框架，简单好用；
+ 
+第一步 准备工作
+1、安装（基于 python3.x 环境）
+pip3 install scrapy
+
+2..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              使用Scrapy结合MongoDB爬取最美应用数据
+            </h2>
+            <div class="post-info">
+              <span>
+                2017-05-28
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <blockquote>
+<p>又开新坑了，最近迷上了爬虫，塞尔达，数据结构。。。时间不够用了已经。</p>
+</blockquote>
+<p>近几天简单的学习了 Scrapy 这个框架，简单好用；</p>
+<!-- more --> 
+<h2 id="第一步-准备工作">第一步 准备工作</h2>
+<p>1、安装（基于 python3.x 环境）</p>
+<pre><code>pip3 install scrapy
+</code></pre>
+<p>2、安装 pycharm<br>
+建议购买正版。。。</p>
+<p>3、下载 MongoDB 和它的 GUI 工具 <a href="https://www.mongodb.com/download-center#community">下载链接</a>;</p>
+<p>4、安装 pymongo</p>
+<pre><code>pip3 install pymongo
+</code></pre>
+<p>安装完毕之后 终端输入 mongod 启动数据库服务；</p>
+<pre><code>2017-04-28T10:32:43.344+0800 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'
+2017-04-28T10:32:43.345+0800 I NETWORK  [thread1] waiting for connections on port 27017
+</code></pre>
+<h2 id="开始">开始</h2>
+<p>简单介绍下 Scrapy<br>
+简单使用主要需要了解三个文件；<br>
+1、items.py<br>
+主要用来接收和暂时保存爬取到的数据<br>
+2、spider<br>
+主要负责爬取数据<br>
+3、pipelines.py<br>
+如果需要存入数据库，在这个文件中操作</p>
+<h3 id="爬取数据">爬取数据</h3>
+<p>目标：爬取最美应用网页端的 APP 数据</p>
+<p>1、打开终端</p>
+<pre><code>scrapy startproject zhuimei
+</code></pre>
+<p>2、使用 pyCharm 打开工程</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-b2b7aff0323a8476.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+项目结构</p>
+<p>其中 main.py 需要自己创建，为后面调试做准备</p>
+<p>3、接下来需要将 zhuimei 文件夹设置为 Sources Root 以便 pycharm 查找 module；<br>
+右击文件夹按下面图操作</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-9b588963dafafc36.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+操作过程</p>
+<p>4、打开 items.py，文件中已经存在一个和项目同名的 Item，可以使用也可以重新声明一个类；<br>
+在文件中声明一个类 zuimeiItem；</p>
+<pre><code>class zuimeiItem(scrapy.Item):
+    id = Field()    # 每个APP的id编号
+    title = Field()  #APP 大标题
+    subtitle = Field() #副标题
+    url = Field()   #下载链接
+    date = Field() #时间
+</code></pre>
+<p>5、在 Spiders 文件夹下新建文件 zuimeispider.py<br>
+导入</p>
+<pre><code>from scrapy import Spider,Request
+from scrapy import Selector
+from zhuimei.items import zuimeiItem
+</code></pre>
+<p>声明一个类继承于 Spider</p>
+<pre><code>class ZuiMeiSpider(Spider):
+    name = &quot;zuimei&quot;   #启动爬虫时以这个名为准
+    allowd_domains = [&quot;http://www.zuimeia.com&quot;]
+    start_urls = ['http://www.zuimeia.com']
+</code></pre>
+<p>接下来解析我们爬取到的数据<br>
+利用火狐浏览器的 firebug 和 firepath 插件来审查页面</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-c1c5657492b9e4e3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+结构</p>
+<p>通过审查我们可以看到 app 的 title 是存储在 一个类名为 “app-title” 的标签下面的 h1 标签下，所以我们使用 Xpath 获取文字</p>
+<pre><code>sel = Selector(response)
+        title_list = sel.xpath(&quot;.//*[@class='app-title']/h1/text()&quot;).extract()
+</code></pre>
+<p>同理获取到副标题，时间和下载链接</p>
+<pre><code>        subtitle_list = sel.xpath(&quot;.//*[@class='sub-title']/text()&quot;).extract()
+        date_list = sel.xpath(&quot;.//*[@class='pub-time']/text()&quot;).extract()
+        url_list = sel.xpath(&quot;.//*[@class='detail-icon']/@href&quot;).extract()
+</code></pre>
+<p>最后将获取到的数据用 item 接收保存</p>
+<pre><code>        for title,subtitle,date,url in zip(title_list,subtitle_list,date_list,url_list):
+            item = zuimeiItem()
+            item[&quot;id&quot;] = url[5:9]
+            item[&quot;title&quot;] = title
+            item[&quot;subtitle&quot;] = subtitle
+            item[&quot;date&quot;] = date
+            item[&quot;url&quot;] = self.allowd_domains[0] + url #下载需要拼接成完整的url
+            yield item
+</code></pre>
+<p>可以在上述代码中添加 print，输出爬取到的数据<br>
+到这步结束，我们就可以启动爬虫，爬取数据了可以选择两个方法</p>
+<p>1、直接打开终端，进入到项目目录下</p>
+<pre><code>scrapy crawl zuimei
+</code></pre>
+<p>2、在新建的 main.py 中</p>
+<pre><code>from  scrapy import cmdline
+
+cmdline.execute(&quot;scrapy crawl zuimei&quot;.split())
+</code></pre>
+<p>打开 Run 下的 Edit Configurations</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-3c2069f4ceeb8c64.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+打开</p>
+<p>新建一个 python，并把 main.py 的路径添加到 Script；</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-515ef89eaeb9a03e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+新建一个 debug 配置</p>
+<p>现在可以直接使用 pycharm 的 debug 功能了；<br>
+两种方法其实原理上相同；</p>
+<h3 id="将数据存入数据库">将数据存入数据库</h3>
+<p>1、打开 settings.py 文件</p>
+<pre><code>#取消注释
+ITEM_PIPELINES = {
+   'zhuimei.pipelines.ZhuimeiPipeline': 300,
+}
+
+#添加下面代码
+MONGODB_HOST = '127.0.0.1'
+MONGODB_PORT = 27017
+#本地数据库的名字可以自己起，这边直接使用 MongoDB自带
+MONGODB_DBNAME = 'local'
+</code></pre>
+<p>2、打开 pipelines.py ，添加下面代码</p>
+<pre><code>class ZhuimeiPipeline(object):
+    def __init__(self):
+        host = settings['MONGODB_HOST']
+        port = settings['MONGODB_PORT']
+        dbName = settings['MONGODB_DBNAME']
+        client = pymongo.MongoClient(host=host, port=port)
+        db = client[dbName]
+        self.post = db[&quot;zuimei&quot;] # 连接表，表需要在MongoDB compass 中创建
+
+    def process_item(self, item, spider):
+        appInfo = dict(item)
+        #防止数据重复存入
+        self.post.update({'id':item['id']},{'$set':dict(item)},True)
+        return item
+</code></pre>
+<p>3、确认数据库服务已经启动<br>
+打开 MongoDB Compass， connect；</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-457f053689db9da7.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+打开 Compass</p>
+<pre><code>  在 local数据库中新建表 zuimei，注意这里一定要和pipelines中表名一致
+</code></pre>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-5bb3838a1dc4a319.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+新建表</p>
+<p>4、启动爬虫，待程序运行结束后</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-59c7dc54c7636710.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+数据</p>
+<h2 id="结语">结语</h2>
+<p>这只是个简单的爬虫，只能爬取当前页面的数据，后面我会补全翻页抓取的操作。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C">第一步 准备工作</a></li>
+<li><a href="#%E5%BC%80%E5%A7%8B">开始</a>
+<ul>
+<li><a href="#%E7%88%AC%E5%8F%96%E6%95%B0%E6%8D%AE">爬取数据</a></li>
+<li><a href="#%E5%B0%86%E6%95%B0%E6%8D%AE%E5%AD%98%E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93">将数据存入数据库</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%93%E8%AF%AD">结语</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/ji-ke-app-dian-zan-shu-zi-bian-hua-dong-hua-xiao-guo-de-shi-xian/">
+              <h3 class="post-title">
+                即刻App 点赞数字变化动画效果的实现
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

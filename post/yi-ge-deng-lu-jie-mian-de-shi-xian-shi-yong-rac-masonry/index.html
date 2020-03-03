@@ -1,0 +1,226 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>一个登陆界面的实现 (使用RAC + Masonry) | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="一个登陆界面的实现 (使用RAC + Masonry) | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="前言
+前段时间看叶孤城直播代码, 发现一个登陆界面, 简单描述下: 登陆按钮的背景色的填充长度随着输入密码长度的变化而变化 (有点像密码安全程度那种)。
+
+完整工程你可以在我的 github 下载到 https://github.com/9..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              一个登陆界面的实现 (使用RAC + Masonry)
+            </h2>
+            <div class="post-info">
+              <span>
+                2015-12-24
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="前言">前言</h1>
+<p>前段时间看叶孤城直播代码, 发现一个登陆界面, 简单描述下: 登陆按钮的背景色的填充长度随着输入密码长度的变化而变化 (有点像密码安全程度那种)。</p>
+<!-- more -->
+<p>完整工程你可以在我的 github 下载到 <a href="https://github.com/94haox/WTLoginPage">https://github.com/94haox/WTLoginPage</a>;</p>
+<h1 id="前期准备">前期准备</h1>
+<ol>
+<li>RAC 2.5 版本</li>
+<li>Masonry</li>
+</ol>
+<p>推荐使用 cocoaPods 安装</p>
+<h1 id="开始">开始</h1>
+<p>需求：用户名 11 位，密码 6 位。当用户名 11 位时，才可以输入密码，当密码和用户名的位数都正确时才可以进行登录操作，同时登陆按钮的背景色的填充长度随密码长度变化</p>
+<h2 id="我们想实现需求关键点在哪">我们想实现需求，关键点在哪？</h2>
+<ol>
+<li>需要考虑背景色问题</li>
+<li>需要监听用户名和密码的长度</li>
+</ol>
+<h2 id="思考">思考</h2>
+<ol>
+<li>button 的背景色的填充长度是没有这种说法的，只能完全填充；那么我们可以将背景色设为 clearColor，然后在其下面贴一个 view 或者 progressView，view 通过改变 width 来显示长度，progress 者可以通过设置 tintcolor 配合 progress 属性来；</li>
+<li>实时监听 UITextField，不用 RAC 怎样写，不写，我们来看看用 RAC 怎么解决这个问题；</li>
+</ol>
+<h2 id="实现">实现</h2>
+<ol>
+<li>搭建界面（所有的属性都写了 getter 方法）<br>
+<img src="http://upload-images.jianshu.io/upload_images/664484-e7242b86fb784574.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+界面搭建（定义属性）.png</li>
+</ol>
+<p>使用 masonry 约束</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/664484-c25e2dcde0873d95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+约束. png</p>
+<p>上面部分我就不介绍了，其实 masonry 还是蛮简单好用的；看看官方示例，很快就能上手</p>
+<ol>
+<li>事件的监听<br>
+<img src="http://upload-images.jianshu.io/upload_images/664484-e4a0fceff211c4eb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+监听 1.png<br>
+这一步是将 <em>userNameTF</em> 的 <em>text</em> 和 <em>passWordTF</em> 的 <em>enable</em> 属性关联起来; 根据 userName 是否是 11 位来改变 passTF 的 enable。</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/664484-c11afe29e547c024.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+监听 2.png</p>
+<p>将 <em>passWordTF</em> 的背景色和它自身的 <em>enable</em> 属性联系起来, 做提示作用<br>
+如果可以输入则背景色为白, 如果不可输入则是黄色</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/664484-ec7ac8d91c3b7317.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+监听 3.png</p>
+<p><em>filter</em> 筛选 如果密码长度是 0 则 <strong>width</strong> 是 0<br>
+如果密码的长度大于 0, 并且小于 7, 就将这个值传下去;</p>
+<p>map 接收值, 然后将它转换为 <em>NSNumber</em> 类型的值继续传到下一步</p>
+<p>next 接收 map 转换过的值, 然后计算底色的长度, OK 完成</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87">前期准备</a></li>
+<li><a href="#%E5%BC%80%E5%A7%8B">开始</a>
+<ul>
+<li><a href="#%E6%88%91%E4%BB%AC%E6%83%B3%E5%AE%9E%E7%8E%B0%E9%9C%80%E6%B1%82%E5%85%B3%E9%94%AE%E7%82%B9%E5%9C%A8%E5%93%AA">我们想实现需求，关键点在哪？</a></li>
+<li><a href="#%E6%80%9D%E8%80%83">思考</a></li>
+<li><a href="#%E5%AE%9E%E7%8E%B0">实现</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/shu-ju-jie-gou-xue-xi-bi-ji-jing-tai-lian-biao-xun-huan-lian-biao-shuang-xun-huan-lian-biao/">
+              <h3 class="post-title">
+                数据结构学习笔记--静态链表、循环链表、双循环链表
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

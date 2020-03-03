@@ -1,0 +1,349 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Node.js + MongoDB + Nginx 线上部署 | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Node.js + MongoDB + Nginx 线上部署 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="Node.js + MongoDB + Nginx 线上部署
+Linux 版本为 centos7
+  
+安装 node.js
+首先直接使用 yum 安装
+$	yum -y install nodejs
+
+但是此时并不是最新的版本， 应该是6..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Node.js + MongoDB + Nginx 线上部署
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-09-17
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="nodejs-mongodb-nginx-线上部署">Node.js + MongoDB + Nginx 线上部署</h1>
+<p>Linux 版本为 centos7</p>
+ <!-- more --> 
+<h2 id="安装-nodejs">安装 node.js</h2>
+<p>首先直接使用 yum 安装</p>
+<pre><code>$	yum -y install nodejs
+</code></pre>
+<p>但是此时并不是最新的版本， 应该是6.xxx，可以使用 <code>node -v</code> 查看；</p>
+<h4 id="升级到最新版本">升级到最新版本</h4>
+<p>首先安装 <strong>n</strong>(nodejs 管理工具)</p>
+<pre><code>$ npm install -g n
+</code></pre>
+<p>安装完成后安装 node.js 最新版本</p>
+<pre><code>$ n latest
+</code></pre>
+<p>然后使用</p>
+<pre><code>$ n
+</code></pre>
+<p>选择最新版本。</p>
+<h2 id="安装-mongodb">安装 MongoDB</h2>
+<p>首先编写 yum 库文件</p>
+<pre><code>$  sudo vi /etc/yum.repos.d/mongodb-org.repo
+</code></pre>
+<p>将下面文本写入</p>
+<pre><code>[mongodb-org-3.4]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
+</code></pre>
+<p>保存并退出；<br>
+检查可用库：</p>
+<pre><code>$  yum repolist
+</code></pre>
+<p>如果看到</p>
+<pre><code>. . .
+repo id                          repo name
+mongodb-org-3.2/7/x86_64         MongoDB Repository
+. . .
+</code></pre>
+<p>就可以进行安装操作</p>
+<pre><code>$  sudo yum install mongodb-org
+</code></pre>
+<p>安装结束后，启动它</p>
+<pre><code>$  sudo systemctl start mongod
+</code></pre>
+<p>如果需要在外部连接 MongoDB, 还需要将 bindIp 由 <strong>127.0.0.1</strong> 切换为 <strong>0.0.0.0</strong></p>
+<pre><code>vi /etc/mongod.conf
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 0.0.0.0  # Listen to local interface only, comment to listen on all interfaces.
+</code></pre>
+<h2 id="安装-nginx">安装 Nginx</h2>
+<p>前期准备</p>
+<pre><code>$  yum install gcc-c++
+$  yum -y install zlib zlib-devel openssl openssl--devel pcre pcre-devel
+</code></pre>
+<p>安装结束后，执行安装 Nginx 的命令：</p>
+<pre><code>$  yum install nginx -y
+</code></pre>
+<h4 id="反向代理配置">反向代理配置</h4>
+<p>进入 nginx 文件夹</p>
+<pre><code>$  cd /etc/nginx
+</code></pre>
+<p>打开配置文件：</p>
+<pre><code>$  vim nginx.conf
+</code></pre>
+<p>忽略其他，我们看 server， 删除多余的，将 server 改造成下面这样：</p>
+<pre><code>    server {
+        listen       80;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+        location / {
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+
+</code></pre>
+<p>然后我们新增自己的代理配置,类似于下面：</p>
+<pre><code>    server {
+        listen 80;
+        server_name xxx.com www.xxx.top;
+        location / {
+                proxy_pass http://127.0.0.1:8080;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $http_host;
+                proxy_set_header X-Nginx-Proxy true;
+                proxy_redirect off;
+        }
+    }
+
+</code></pre>
+<p>解释下：</p>
+<ul>
+<li>server_nme 是域名，这边可以配置一级或者二级域名；</li>
+<li>proxy_pass 是ip，通常直接以 127.0.0.1 代替，当然你也可以写你云服务器的公网ip；</li>
+</ul>
+<p>其他的照着写就👌， 上面文本达成的效果是，使用 server_name 代替直接访问 ip.<br>
+Ps. server_name 只能填写域名解析后的域名，并且需要在云服务器安全组中添加 80 端口的支持规则。</p>
+<h4 id="ssl-配置">SSL 配置</h4>
+<p>首先要申请证书，并且下载到本地。<br>
+通常它们会是这样命名：</p>
+<pre><code>// xxx 是域名
+cert-1541562634350_xxx.crt
+cert-1541562634350_xxx.key
+</code></pre>
+<p>下载完后，使用 FTP 等同类工具上传到云服务器上，在 <strong>/etc/nginx</strong> 文件夹下创建 <strong>cert</strong>,将这这两个文件移到这个文件夹下；</p>
+<p>接着编写  nginx.conf</p>
+<pre><code>    server {
+        listen       443 ssl;
+        server_name  *.xxx.com;
+        root         /usr/share/nginx/html;
+
+        ssl_certificate /etc/nginx/cert/cert-1541562634350_www.funnyfm.top.crt;
+        ssl_certificate_key /etc/nginx/cert/cert-1541562634350_www.funnyfm.top.key;
+        ssl_session_cache shared:SSL:1m;
+        ssl_session_timeout  10m;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers on;
+
+        location / {
+                proxy_pass http://127.0.0.1:8080;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header Host $http_host;
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+</code></pre>
+<p>几个注意点：</p>
+<ul>
+<li>SSL 监听的是 443 端口，需要在安全规则中添加；</li>
+<li>每一个 SSL server 需要对应一个 http 80 的server</li>
+</ul>
+<p>编写结束后，需要重启 Nginx</p>
+<pre><code>$  nginx -s reload
+</code></pre>
+<p>好了，现在可以使用 <code>xxx.com</code> 来代替直接访问 ip 了。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#nodejs-mongodb-nginx-%E7%BA%BF%E4%B8%8A%E9%83%A8%E7%BD%B2">Node.js + MongoDB + Nginx 线上部署</a>
+<ul>
+<li><a href="#%E5%AE%89%E8%A3%85-nodejs">安装 node.js</a><br>
+*
+<ul>
+<li><a href="#%E5%8D%87%E7%BA%A7%E5%88%B0%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC">升级到最新版本</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%89%E8%A3%85-mongodb">安装 MongoDB</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85-nginx">安装 Nginx</a><br>
+*
+<ul>
+<li><a href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE">反向代理配置</a></li>
+<li><a href="#ssl-%E9%85%8D%E7%BD%AE">SSL 配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/tan-jiu-runloop/">
+              <h3 class="post-title">
+                探究 Runloop 
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

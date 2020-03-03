@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://blog.wutao.xyz</id>
+    <title>Gridea</title>
+    <updated>2020-03-03T12:43:56.733Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://blog.wutao.xyz"/>
+    <link rel="self" href="https://blog.wutao.xyz/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://blog.wutao.xyz/images/avatar.png</logo>
+    <icon>https://blog.wutao.xyz/favicon.ico</icon>
+    <rights>All rights reserved 2020, Gridea</rights>
+    <entry>
+        <title type="html"><![CDATA[写在 FunnyFM 上线两个月后]]></title>
+        <id>https://blog.wutao.xyz/post/xie-zai-funnyfm-shang-xian-liang-ge-yue-hou/</id>
+        <link href="https://blog.wutao.xyz/post/xie-zai-funnyfm-shang-xian-liang-ge-yue-hou/">
+        </link>
+        <updated>2019-10-11T07:51:59.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="写在-funnyfm-上线两个月后">写在 FunnyFM 上线两个月后</h1>
+<p>FunnyFM 是一款实用的 Podcast 客户端。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="写在-funnyfm-上线两个月后">写在 FunnyFM 上线两个月后</h1>
+<p>FunnyFM 是一款实用的 Podcast 客户端。</p>
+<!-- more -->
+<p>它被我立项的原因是 iOS 自带的 Podcast 客户端在添加多个泛用型 RSS 播客后会非常的卡顿，在我的主力机 iPhoneX 上必现卡死。所以我萌发了自己做一款好用，流畅的 Podcast 客户端。</p>
+<h2 id="开发周期">开发周期</h2>
+<p>FunnyFM 仓库的创建是在 18年的11月9号，正式上线时间是在19年的8月14号。时间跨度非常的长。<br>
+主要原因有几个：<br>
+1、初期没有上线计划，纯粹自娱自乐；<br>
+2、有上线计划后，功能过于简单，UI过于简陋，没有上线欲望；<br>
+3、UI 基本靠自己画；<br>
+4、将 rss 的解析由本地迁移到服务端，也就是说，自己承担了产品，UI，后端，iOS开发这4个角色；<br>
+5、期间由于公司有个大的需求，开发时间较少。</p>
+<h2 id="技术选型">技术选型</h2>
+<h4 id="app-端">App 端</h4>
+<p>这个没什么好说的，基于学习的原因，选择使用了 Swift， 本身没有上线 Android 平台的计划，所以并没有考虑混合开发，虽然 flutter 很🔥。</p>
+<h4 id="后端">后端</h4>
+<p>这个也没啥可说的，主要决定用 node.js,  选型主要是在几个框架中选择。经过比较后，egg.js 成为我的选择，原因主要是阿里开源，在阿里内部有使用，插件较多，在国内使用者比较多。</p>
+<h4 id="前端">前端</h4>
+<p>我爱 Vue。</p>
+<h4 id="设计工具">设计工具</h4>
+<p>Sketch ， &quot;灵感&quot;来源 Dribbble 😂。</p>
+<h4 id="遇到的困难">遇到的困难</h4>
+<p>1、需求变动<br>
+由于初期并没有详细的规划，所以需求变动较快，也比较大，总想做一个成熟的版本一次性上架。</p>
+<p>2、设计变动<br>
+本身并不专业，只能在没有版权的作品中进行部分调整。多个模块有多次 UI 变动。</p>
+<p>3、服务端<br>
+起初的设想只是有一个账户系统，用来同步不同设备中的订阅功能。后续又添加了推送服务，推送服务又牵扯到 RSS 的抓取和判别，在加上最近计划的订阅服务，还有权限问题。</p>
+<p>4、移动端<br>
+目前在做的分享页，需要添加接口，也增加了工作量。</p>
+<p>5、宣传<br>
+完全没有做，只在 V2EX 发了一个贴😂。</p>
+<h4 id="后期计划">后期计划</h4>
+<p>目前已经更新 9 个版本，两个月内，平均一周一个版本，有时候更短，主要是由于缺乏测试，在收到崩溃报告时，需要快速解决和上架💔。</p>
+<p>目前是买断制，正在计划转为订阅制。</p>
+<p>正在进行的和后续的计划有：</p>
+<p>分享功能，分享页。<br>
+官方通知系统。<br>
+订阅系统和账号系统关联。<br>
+用户等级的划分。<br>
+泛用型播客源的自主添加。<br>
+添加推送页。</p>
+<h4 id="总结">总结</h4>
+<p>通过这篇文章来记录 FunnyFM 的前世今生，也记录一下全栈开发的艰辛，独立开发者是真的辛苦！</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ APP 的一次启动优化]]></title>
+        <id>https://blog.wutao.xyz/post/app-de-yi-ci-qi-dong-you-hua/</id>
+        <link href="https://blog.wutao.xyz/post/app-de-yi-ci-qi-dong-you-hua/">
+        </link>
+        <updated>2019-08-03T06:27:28.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="前言">前言</h1>
+<p>当 App 迭代到一定阶段，业务逐渐增多，项目不断变大，启动时间优化是一个必经的阶段，这篇文章，我将从启动过程来提出几个优化点。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="前言">前言</h1>
+<p>当 App 迭代到一定阶段，业务逐渐增多，项目不断变大，启动时间优化是一个必经的阶段，这篇文章，我将从启动过程来提出几个优化点。</p>
+<!-- more -->
+<p>强烈建议观看 wwdc 2016 相关视频 <a href="https://developer.apple.com/videos/play/wwdc2016/406/">Optimizing App Startup Time</a></p>
+<h1 id="开始">开始</h1>
+<p>先放两个启动时间对比，只是一般的数据，精准度没有很高，但是两个在同种条件下的耗时还是具有一定对比性.</p>
+<pre><code>// 一个新建的工程在 pre-main 期间的耗时数据
+Total pre-main time:  85.98 milliseconds (100.0%)
+         dylib loading time:  35.28 milliseconds (41.0%)
+        rebase/binding time:  12.73 milliseconds (14.8%)
+            ObjC setup time:   4.40 milliseconds (5.1%)
+           initializer time:  33.56 milliseconds (39.0%)
+</code></pre>
+<pre><code>// 苏宁智能的耗时数据
+Total pre-main time: 1.7 seconds (100.0%)
+         dylib loading time: 418.45 milliseconds (23.9%)
+        rebase/binding time: 111.41 milliseconds (6.3%)
+            ObjC setup time: 413.69 milliseconds (23.6%)
+           initializer time: 802.37 milliseconds (45.9%)
+</code></pre>
+<p>接下来，我们从上面的 log 开始分析在 App 启动过程中，做了哪些事情。</p>
+<h3 id="app-启动流程">APP 启动流程</h3>
+<p>这里的启动特指「冷启动」，这种启动是一种完整的启动流程，包括系统的进程创建。</p>
+<h4 id="启动时系统都做了那些事">启动时，系统都做了那些事？</h4>
+<p>从用户点击 APP 到首页显示，业界有多种不同的阶段划分方式，比较主流的是将其分为三个阶段：</p>
+<ul>
+<li>main() 函数执行前（pre-main阶段）；</li>
+<li>main() 函数执行后；</li>
+<li>首页渲染完成之后</li>
+</ul>
+<h4 id="main-函数启动前">main() 函数启动前</h4>
+<p>main() 函数启动前，我们一般称之为 pre-main 阶段，在这个阶段，objc 源码中无法debug，这个过程中主要是 dyld 工作，包括加载可执行文件，符号绑定等等 。</p>
+<p>在这里我们先不要仔细拆分整个流程，先从上面的 pre-main 启动时间分析的 log 来看一看这期间主要做了哪些事情：</p>
+<ul>
+<li>
+<p><code>dylib loading</code><br>
+加载所有的可执行文件 Mach-O 。</p>
+</li>
+<li>
+<p><code>rebase/binding</code><br>
+加载动态链接库 dyld，dyld 递归的加载所有的依赖动态库。并进行 rebase 指针调整和 bind 符号绑定。</p>
+</li>
+<li>
+<p><code>ObjC setup</code><br>
+Objc runtime 的初始处理，包括 Objc 相关类的注册、category 注册、selector 唯一性检查等。</p>
+</li>
+<li>
+<p><code>initializer</code><br>
+从名字可以看出，这里主要进行初始化。其中包括执行 + load() 方法。 attribute((constructor))  修饰的函数的调用、创建 C++ 静态全局变量。</p>
+</li>
+</ul>
+<h4 id="main-函数之后">main() 函数之后</h4>
+<p>这里指的是从 main() 执行开始，到 didFinishLaunchingWithOptions方法中 keyWindow 渲染执行完毕之后。</p>
+<p>这里主要是创建全局的 autoreleasepool 和渲染首屏相关的配置文件的读取，渲染的计算等等。</p>
+<h4 id="首屏渲染完成后">首屏渲染完成后</h4>
+<p>主要包含和非首屏页面渲染不相关的业务，模块的初始化，配置文件的读取等等。<br>
+这个阶段用户已经看到页面了，其实不影响首屏的数据时间，但是如果存在线程阻塞，那么还是会影响到用户的体验，还是要注重一下。</p>
+<h3 id="优化方向">优化方向</h3>
+<p>从启动流程的几个阶段来看，pre-main 和 main() 函数启动之后占的比重比较大，所以大部分关于时间的优化，我们都应该针对这些来做。</p>
+<h4 id="pre-main">pre-main</h4>
+<ul>
+<li>动态库的加载<br>
+上面的耗时日志中，我省略了项目中动态库的耗时显示，这里放两个项目中引用的两个动态库的加载时间的 log:</li>
+</ul>
+<pre><code>CloudyTrace_IOS :  84.64 milliseconds
+ZDKDynamicFramework :  15.28 milliseconds 
+</code></pre>
+<p>可以看到，动态库的耗时还是挺多的，其中 <em>CloudyTrace_IOS</em> 这个动态库的加载时间几乎和一个新建项目的 pre-main 阶段总耗时还多。并且每一个动态库本身也都有依赖关系。<br>
+苹果在 wwdc 上也建议少使用动态库，并且尽可能将动态库进行合并，我们在这里可以做的措施有两个：<br>
+1、合并动态库，减少动态库的个数，这里推荐一个 grab 开源的一个<a href="https://github.com/grab/cocoapods-pod-merge">工具</a>，可以将多个依赖合并；<br>
+2、将依赖转变未静态库，只需要在 <strong>Podfile</strong> 中添加下面代码，但是需要注意的是，它只支持 1.7.x 以上版本</p>
+<pre><code class="language-ruby"># Add these in your Podfile (available for CocoaPods v1.7.x+)
+
+target 'YourApp' do
+    # all you pods here...
+end
+
+pre_install do |installer|
+  puts &quot;Make pods linked statically except reserved pods&quot;
+  installer.pod_targets.each do |pod|
+    if !keep_dynamically_linked.include?(pod.name)
+      puts &quot;Override the static_framework? method for #{pod.name}&quot;
+      def pod.build_type;
+        Pod::Target::BuildType.static_framework
+      end
+    end
+  end
+end
+</code></pre>
+<ul>
+<li>ObjC setup &amp; initializer</li>
+</ul>
+<p>在这两个过程中，dyld 会将已经加载到内存中的二进制数据交给 runtime 加载为 objc 定义的结构。通过 <code>call_load_methods</code> 遍历所有的类，在遍历期间，通过 <code>call_class_loads</code> 和 <code>call_class_loads</code> 来调用 class 的 <code>+load</code> 方法和 Category 的 <code>+load</code> 方法。这也就说明，类越多，方法越多，则耗时越多。<br>
+要特别指出的是在一个 <code>+load</code> 方法里，进行运行时方法替换操作会带来4毫秒的消耗。</p>
+<p>关于这个阶段的优化自然对应的就是：</p>
+<ul>
+<li>删除无用的类和无用的方法，减少类的数目</li>
+<li>所以尽量将 <code>+load</code> 方法，替换为 <code>initialize</code>方法。降低<code>+load</code>的执行次数</li>
+<li>控制 C++ 全局变量的数量。</li>
+</ul>
+<h4 id="main-函数调用之后">main() 函数调用之后</h4>
+<p>我们经常将第三方库的注册和初始化放在 didFinishLaunchingWithOptions 中，在这个阶段，我们需要的优化点其实就是：<br>
+梳理业务，将首屏渲染用不到的业务放到渲染之后去做，将不需要立即初始化和不需要在主线程初始化的，都放在异步进行延时加载。</p>
+<p>最后放上第一阶段优化后的 log：</p>
+<pre><code>// 苏宁智能的耗时数据
+Total pre-main time: 822.32 seconds (100.0%)
+         dylib loading time: 210.71 milliseconds (25.6%)
+        rebase/binding time:  60.37 milliseconds (7.3%)
+            ObjC setup time: 87.20 milliseconds (10.6%)
+           initializer time: 464.04 milliseconds (56.4%)
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[如何创建一个 Xcode server Bot （自动打包机器人）]]></title>
+        <id>https://blog.wutao.xyz/post/ru-he-chuang-jian-yi-ge-xcode-server-bot-zi-dong-da-bao-ji-qi-ren/</id>
+        <link href="https://blog.wutao.xyz/post/ru-he-chuang-jian-yi-ge-xcode-server-bot-zi-dong-da-bao-ji-qi-ren/">
+        </link>
+        <updated>2019-06-17T06:47:28.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="如何创建一个-xcode-server-bot-自动打包机器人">如何创建一个 Xcode server Bot （自动打包机器人）</h1>
+<h2 id="概述">概述</h2>
+<p>为了解决平时生产过程中打包流程繁琐，打包分散，不同开发人员打包配置不同导致的包功能不全等问题。经过研究几种自动化打包方法，现决定使用苹果未开发人员提供的自动化打包方案，Xcode server 解决上述问题。</p>
+<h2 id="xcode-server-是什么">Xcode server 是什么？</h2>
+<p>Xcode Server，苹果提供了一个自带的 CI 方案，可以理解为 Jenkins 和 fastlane 的功能集合体，是一个持续化集成和打包测试工具。具体描述和功能，请自行百度/ google。</p>
+<h2 id="配置方法">配置方法</h2>
+<p>首先连接内网，原因是，版本管理是基于内网的 gitlab，而 Xcode server 依赖于 git 服务。</p>
+<p>然后打开 Xcode 选择左边功能栏的标识处</p>
+<figure data-type="image" tabindex="1"><img src="https://ws3.sinaimg.cn/large/006tNc79gy1g3ci8tchnpj30b5026aau.jpg" alt="" loading="lazy"></figure>
+<p>然后选择 SmartHome 的 Mac mini （Xcode server 服务提供机器）<br>
+这里是因为之前的配置已经完成，我直接省略了部署 Xcode server 步骤，有兴趣请自行了解😂</p>
+<figure data-type="image" tabindex="2"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cibgx6a2j309o08nwi8.jpg" alt="" loading="lazy"></figure>
+<p>然后选择 Create Bot</p>
+<figure data-type="image" tabindex="3"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cicw8rbnj309w0dvahp.jpg" alt="" loading="lazy"></figure>
+<p>第一步  输入 Bot 名字和部署 Xcode server 服务的机器（名字建议和版本分支关联，尽量详细一些）</p>
+<figure data-type="image" tabindex="4"><img src="https://ws3.sinaimg.cn/large/006tNc79gy1g3cinqgrfnj30kc0c0gnh.jpg" alt="" loading="lazy"></figure>
+<p>第二步 验证 git 服务的账号密码</p>
+<figure data-type="image" tabindex="5"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cioreubsj30kd0c040m.jpg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cioreubsj30kd0c040m.jpg" alt="" loading="lazy"></figure>
+<p>第三步 选择想要自动打包的分支</p>
+<figure data-type="image" tabindex="7"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cipqvncij30kc0c343b.jpg" alt="" loading="lazy"></figure>
+<p>第四步 选择导出方式，这里选择自定义导出</p>
+<figure data-type="image" tabindex="8"><img src="https://ws1.sinaimg.cn/large/006tNc79gy1g3cir7u4jsj30kg0c0418.jpg" alt="" loading="lazy"></figure>
+<p>自定义导出需要一个 exportoption plist， 这个主要是告诉 server 本次打包的一些配置，例如打包方式，描述文件和证书配置之类的设定，<br>
+获取方式：手动导出一个 ipa 可以获取。</p>
+<figure data-type="image" tabindex="9"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3ciu0z7h9j30m70bmjso.jpg" alt="" loading="lazy"></figure>
+<p>第五步 选择打包频率<br>
+主要有三个选择，周期性，手动和检测到 commit<br>
+简单解释一下， 周期性顾名思义，可以设定在每天或者每个小时，或者每周打包；<br>
+手动就是，每次有需要时，由开发人员手动开启打包；<br>
+Commit 是每次检测到 当前集成分支有 commit 时，自动开启打包流程。<br>
+本次我们选择 <strong>周期性打包</strong>， 在每天的 9点，14点和 19点进行打包。</p>
+<figure data-type="image" tabindex="10"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3ciup6uv0j30kc0c0q67.jpg" alt="" loading="lazy"></figure>
+<p>第五步 选择为指定设备打包<br>
+可以选择仅为真实设备打包，或者为真实设备和模拟器一起打包，这里我们选择为真实设备打包（其实都可以😜）<br>
+<img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cj03o1mwj30ke0bz778.jpg" alt="" loading="lazy"></p>
+<p>第六步， 第七步 可以跳过，不需配置</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1g3cj2tyi5uj30kf0c2tax.jpg" alt="" loading="lazy"><br>
+<img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cj3isgw3j30ke0c0taw.jpg" alt="" loading="lazy"></p>
+<p>第八步  添加脚本<br>
+这个配置主要用来做一些额外操作，比如在打包前，我们可能需要更新下 pod，那么我们可以选择 Pre-integration 添加操作脚本，基于 bash；</p>
+<figure data-type="image" tabindex="11"><img src="https://ws1.sinaimg.cn/large/006tNc79gy1g3cj3rkjabj30kh0c6q5n.jpg" alt="" loading="lazy"></figure>
+<p>在本 Bot 中，我们需要打包完成后，自动将导出的 ipa 上传到内网 ipa 仓库；<br>
+所以选择 Post-integration，并添加以下脚本：</p>
+<pre><code class="language-bash">
+# 打印 ipa 路径 
+echo $XCS_PRODUCT
+
+# 苏宁智能 appId
+appId=&quot;8&quot;
+
+# 苏宁智能 versionId
+versionId=&quot;542&quot;
+
+# ipa 上传路径
+uploadUrl=&quot;xxxxxxx/upload.json&quot;
+
+# ipa 名称
+ipa_Name=&quot;Smarthome&quot;
+
+# ipa bundle_id
+bundle_id=&quot;com.suning.intelligence&quot;
+
+# 上传包到 ipa
+curl -F &quot;appId=${appId}&quot; -F &quot;versionId=${versionId}&quot; -F &quot;bundleId=${bundle_id}&quot; -F &quot;ipaDesc=${ipaName}&quot; -F &quot;ipaFile=@$XCS_PRODUCT&quot; ${uploadUrl}
+
+
+</code></pre>
+<figure data-type="image" tabindex="12"><img src="https://ws4.sinaimg.cn/large/006tNc79gy1g3cj8pu2r8j30kd0cr0vo.jpg" alt="" loading="lazy"></figure>
+<p>最终点击 Done 完成，配置完成后，会进行初次打包，可能会有各种检测，因此时间较长，大约 30min，除此之外，平均打包时间在 11min 之内（当然了，看配置）。</p>
+<h2 id="注意事项">注意事项</h2>
+<p>1、由于每次打包，Server 都会从集成分支拉去最新代码，所以我们需要保证提交代码时 bundleid 和证书配置需要为 release 配置</p>
+<figure data-type="image" tabindex="13"><img src="https://ws2.sinaimg.cn/large/006tNc79gy1g3cjdb6bwlj30zm0kltbs.jpg" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[近期历程和感悟]]></title>
+        <id>https://blog.wutao.xyz/post/jin-qi-li-cheng-he-gan-wu/</id>
+        <link href="https://blog.wutao.xyz/post/jin-qi-li-cheng-he-gan-wu/">
+        </link>
+        <updated>2018-09-22T06:57:49.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="近期历程和感悟">近期历程和感悟</h1>
+<p>好久没写博客了，在上次之后差不多有4个月没有动手写博客，期间发生了许多事：</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="近期历程和感悟">近期历程和感悟</h1>
+<p>好久没写博客了，在上次之后差不多有4个月没有动手写博客，期间发生了许多事：</p>
+<!-- more --> 
+<ul>
+<li>入职了一家全是坑的公司，一个月后果断弃坑；</li>
+<li>走了阿里的面试流程，挂在了3面；</li>
+<li>请人帮忙内推字节跳动，没回应🤣；</li>
+<li>又选了一家做大数据营销的公司，但是公司氛围不对，一周后弃坑；</li>
+<li>感觉自己有些焦虑，逃离上海，回了南京；</li>
+<li>体验了某狮厂的公司文化🤣，忙忙碌碌3个月。</li>
+</ul>
+<p>5个月中的经历很很复杂，也很精彩，有些公司紧张过度，有些公司松懈过度，有些公司面试靠谱，有些公司水的不行，总的来说，就是林子大了什么鸟都有。</p>
+<p>上家公司从暴雷到老板跑路期间也就1个月，彻底爆发也就1周，一家资产也号称过10亿的公司，说倒就倒，搞的我很懵逼。</p>
+<p>五月份找工作也是让我很醉🤣，先后面试了10多家公司，虽然拿到了6个 offer，但是都不是很满意，再加上来上海已经3年多，三年中压力不断累积，渐渐变得焦虑，索性辞职回家。</p>
+<p>南京的生活还是很舒适的，压力小了很多，修养一周，朋友内推狮厂，4轮面试，成功拿到 offer。</p>
+<p>工作其实有很多不如意的地方，但是在南京这座城市，对于 iOS 开发来说，也少有更好的选择。</p>
+<p>这三个月中，腾讯裁员，阿里停止社招，华为停止社招，似乎在贸易战和国内经济大环境下，大公司都要度过寒冬，更不要说那些创业小公司了，哎，工作且行且珍惜吧。</p>
+<p>啰嗦了这么多，记录下最近的状态。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Node.js + MongoDB + Nginx 线上部署]]></title>
+        <id>https://blog.wutao.xyz/post/nodejs-mongodb-nginx-xian-shang-bu-shu/</id>
+        <link href="https://blog.wutao.xyz/post/nodejs-mongodb-nginx-xian-shang-bu-shu/">
+        </link>
+        <updated>2018-09-17T06:53:10.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="nodejs-mongodb-nginx-线上部署">Node.js + MongoDB + Nginx 线上部署</h1>
+<p>Linux 版本为 centos7</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="nodejs-mongodb-nginx-线上部署">Node.js + MongoDB + Nginx 线上部署</h1>
+<p>Linux 版本为 centos7</p>
+ <!-- more --> 
+<h2 id="安装-nodejs">安装 node.js</h2>
+<p>首先直接使用 yum 安装</p>
+<pre><code>$	yum -y install nodejs
+</code></pre>
+<p>但是此时并不是最新的版本， 应该是6.xxx，可以使用 <code>node -v</code> 查看；</p>
+<h4 id="升级到最新版本">升级到最新版本</h4>
+<p>首先安装 <strong>n</strong>(nodejs 管理工具)</p>
+<pre><code>$ npm install -g n
+</code></pre>
+<p>安装完成后安装 node.js 最新版本</p>
+<pre><code>$ n latest
+</code></pre>
+<p>然后使用</p>
+<pre><code>$ n
+</code></pre>
+<p>选择最新版本。</p>
+<h2 id="安装-mongodb">安装 MongoDB</h2>
+<p>首先编写 yum 库文件</p>
+<pre><code>$  sudo vi /etc/yum.repos.d/mongodb-org.repo
+</code></pre>
+<p>将下面文本写入</p>
+<pre><code>[mongodb-org-3.4]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
+</code></pre>
+<p>保存并退出；<br>
+检查可用库：</p>
+<pre><code>$  yum repolist
+</code></pre>
+<p>如果看到</p>
+<pre><code>. . .
+repo id                          repo name
+mongodb-org-3.2/7/x86_64         MongoDB Repository
+. . .
+</code></pre>
+<p>就可以进行安装操作</p>
+<pre><code>$  sudo yum install mongodb-org
+</code></pre>
+<p>安装结束后，启动它</p>
+<pre><code>$  sudo systemctl start mongod
+</code></pre>
+<p>如果需要在外部连接 MongoDB, 还需要将 bindIp 由 <strong>127.0.0.1</strong> 切换为 <strong>0.0.0.0</strong></p>
+<pre><code>vi /etc/mongod.conf
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 0.0.0.0  # Listen to local interface only, comment to listen on all interfaces.
+</code></pre>
+<h2 id="安装-nginx">安装 Nginx</h2>
+<p>前期准备</p>
+<pre><code>$  yum install gcc-c++
+$  yum -y install zlib zlib-devel openssl openssl--devel pcre pcre-devel
+</code></pre>
+<p>安装结束后，执行安装 Nginx 的命令：</p>
+<pre><code>$  yum install nginx -y
+</code></pre>
+<h4 id="反向代理配置">反向代理配置</h4>
+<p>进入 nginx 文件夹</p>
+<pre><code>$  cd /etc/nginx
+</code></pre>
+<p>打开配置文件：</p>
+<pre><code>$  vim nginx.conf
+</code></pre>
+<p>忽略其他，我们看 server， 删除多余的，将 server 改造成下面这样：</p>
+<pre><code>    server {
+        listen       80;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+        location / {
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+
+</code></pre>
+<p>然后我们新增自己的代理配置,类似于下面：</p>
+<pre><code>    server {
+        listen 80;
+        server_name xxx.com www.xxx.top;
+        location / {
+                proxy_pass http://127.0.0.1:8080;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $http_host;
+                proxy_set_header X-Nginx-Proxy true;
+                proxy_redirect off;
+        }
+    }
+
+</code></pre>
+<p>解释下：</p>
+<ul>
+<li>server_nme 是域名，这边可以配置一级或者二级域名；</li>
+<li>proxy_pass 是ip，通常直接以 127.0.0.1 代替，当然你也可以写你云服务器的公网ip；</li>
+</ul>
+<p>其他的照着写就👌， 上面文本达成的效果是，使用 server_name 代替直接访问 ip.<br>
+Ps. server_name 只能填写域名解析后的域名，并且需要在云服务器安全组中添加 80 端口的支持规则。</p>
+<h4 id="ssl-配置">SSL 配置</h4>
+<p>首先要申请证书，并且下载到本地。<br>
+通常它们会是这样命名：</p>
+<pre><code>// xxx 是域名
+cert-1541562634350_xxx.crt
+cert-1541562634350_xxx.key
+</code></pre>
+<p>下载完后，使用 FTP 等同类工具上传到云服务器上，在 <strong>/etc/nginx</strong> 文件夹下创建 <strong>cert</strong>,将这这两个文件移到这个文件夹下；</p>
+<p>接着编写  nginx.conf</p>
+<pre><code>    server {
+        listen       443 ssl;
+        server_name  *.xxx.com;
+        root         /usr/share/nginx/html;
+
+        ssl_certificate /etc/nginx/cert/cert-1541562634350_www.funnyfm.top.crt;
+        ssl_certificate_key /etc/nginx/cert/cert-1541562634350_www.funnyfm.top.key;
+        ssl_session_cache shared:SSL:1m;
+        ssl_session_timeout  10m;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers on;
+
+        location / {
+                proxy_pass http://127.0.0.1:8080;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header Host $http_host;
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+</code></pre>
+<p>几个注意点：</p>
+<ul>
+<li>SSL 监听的是 443 端口，需要在安全规则中添加；</li>
+<li>每一个 SSL server 需要对应一个 http 80 的server</li>
+</ul>
+<p>编写结束后，需要重启 Nginx</p>
+<pre><code>$  nginx -s reload
+</code></pre>
+<p>好了，现在可以使用 <code>xxx.com</code> 来代替直接访问 ip 了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[探究 Runloop ]]></title>
+        <id>https://blog.wutao.xyz/post/tan-jiu-runloop/</id>
+        <link href="https://blog.wutao.xyz/post/tan-jiu-runloop/">
+        </link>
+        <updated>2018-06-17T06:54:29.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="探究-runloop">探究 Runloop</h1>
+<blockquote>
+<p>对于 iOS 开发者来说， Runloop 应该是大家都熟悉的，这篇文章只是本人在阅读源码时的一些理解。</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="探究-runloop">探究 Runloop</h1>
+<blockquote>
+<p>对于 iOS 开发者来说， Runloop 应该是大家都熟悉的，这篇文章只是本人在阅读源码时的一些理解。</p>
+</blockquote>
+<!-- more --> 
+<h3 id="runloop-相关结构体">Runloop 相关结构体</h3>
+<p>Objective-C 是对 C 的封装，所以一切相关的底层其实都是通过 C 来实现的，我们先看下 Runloop 相关的概念。<br>
+这里说的 Runloop 并不是 Apple 在 iOS 中的实现，因为 iOS 不是开源的。我们现在所说的其实只是 Apple 开源的 CF 框架的源码，但是管中窥豹，通过它也能了解 Apple 的思路。</p>
+<h4 id="__cfrunloop">__CFRunLoop</h4>
+<p>首先是 Runloop，底层是 C 的结构体</p>
+<pre><code class="language-C">struct __CFRunLoop {
+    __CFPort _wakeUpPort;			// used for CFRunLoopWakeUp 
+    volatile _per_run_data *_perRunData;   // 预设状态
+    pthread_t _pthread; // 线程
+    CFMutableSetRef _commonModes; // 存储 ModeName
+    CFMutableSetRef _commonModeItems; 
+    CFRunLoopModeRef _currentMode; // 当前 Mode
+    CFMutableSetRef _modes;  // 所有的 Mode
+    ...
+};
+</code></pre>
+<p>上面列出的是相对重要的部分， 我们一个一个看。没有细说的注意看代码块中的注释<br>
+首先 <strong>_wakeUpPort</strong> 这是用来进行唤醒 Runloop 的特定端口；<br>
+然后是 <strong>_perRunData</strong> 这个需要结合下面代码来看：</p>
+<pre><code class="language-C">// 是否是 停止状态
+CF_INLINE Boolean __CFRunLoopIsStopped(CFRunLoopRef rl) {
+    return (rl-&gt;_perRunData-&gt;stopped) ? true : false;
+}
+
+// 标记为停止状态
+CF_INLINE void __CFRunLoopSetStopped(CFRunLoopRef rl) {
+    rl-&gt;_perRunData-&gt;stopped = 0x53544F50;	// 'STOP'
+}
+
+...
+
+</code></pre>
+<p>可以看到，runloop 的很多状态都是存储在 <strong>_perRunData</strong> 之中的，我们可以把它看做是 runloop 的状态指示器。</p>
+<p><strong>_pthread</strong> 的类型是 <strong>pthread_t</strong> ，这是 pthread 的底层，这样也说明了，为什么线程和 <strong>runloop</strong> 是一一对应的；</p>
+<p><strong>_commonModes</strong> 这是一个集合， 主要存储着 modename；</p>
+<p><strong>_commonModeItems</strong> 也是一个集合， 主要存储着 modename 对应的 <strong>CFRunLoopModeRef</strong> 中的 Source/Observer/Timer；</p>
+<h4 id="cfrunloopmoderef">CFRunLoopModeRef</h4>
+<p>通过 Runloop 的结构体，我们可以看到，<strong>CFRunLoopModeRef</strong> 在其中占据很大的比例，那么我们继续看 <strong>CFRunLoopModeRef</strong> 是什么东西：</p>
+<pre><code class="language-C">struct __CFRunLoopMode {
+    CFStringRef _name;
+    CFMutableSetRef _sources0;
+    CFMutableSetRef _sources1;
+    CFMutableArrayRef _observers;
+    CFMutableArrayRef _timers;
+    ...
+};
+</code></pre>
+<p>很长一段，我只贴出来一部分，其他可以看源码。可以看到也是一个结构体（其实所有OC类的底层实现都是C中的结构体）。</p>
+<p>在这其中，其实就是三类成员，<strong>__CFRunLoopSource</strong>， <strong>__CFRunLoopObserver</strong> 和 <strong>__CFRunLoopTimer</strong>。</p>
+<p>它们的关系可以看这幅图，比较直观：<br>
+<img src="https://blog.ibireme.com/wp-content/uploads/2015/05/RunLoop_0.png" alt="" loading="lazy"></p>
+<p>那么继续，我们在聊聊这三个家伙是个啥。</p>
+<h4 id="__cfrunloopsource">__CFRunLoopSource</h4>
+<p>Mode 结构体中 source 有两个版本，一个source0，一个source1。<br>
+先说下，source 是什么，runloop 中，需要一个标识来告诉它，是否有事件需要处理，然而单纯的使用一个标识符无法实现比较复杂的需求，这时候 source 就出现了，通过调用方法，来得到一个 BOOL 值，通过这个值来确定是否需要处理事件。</p>
+<p>为什么这么说？我们需要看下这个方法：</p>
+<pre><code>	static int32_t __CFRunLoopRun(CFRunLoopRef rl, CFRunLoopModeRef rlm, CFTimeInterval seconds, Boolean stopAfterHandle, CFRunLoopModeRef previousMode){
+			...
+			Boolean sourceHandledThisLoop = __CFRunLoopDoSources0(rl, rlm, stopAfterHandle);
+	    if (sourceHandledThisLoop) {
+            __CFRunLoopDoBlocks(rl, rlm);
+	    }
+			...
+			
+			sourceHandledThisLoop = __CFRunLoopDoSource1(rl, rlm, rls, msg, msg-&gt;msgh_size, &amp;reply) || sourceHandledThisLoop;
+	    sourceHandledThisLoop = __CFRunLoopDoSource1(rl, rlm, rls) || sourceHandledThisLoop;
+			...
+	
+	}
+	
+</code></pre>
+<p>这是 Runloop 启动方法，后面会仔细分析，现在主要看贴出来的方法。</p>
+<p>可以看到，runloop 处理事件主要是通过三个方法：<br>
+<strong>__CFRunLoopDoSources0</strong> ， <strong>__CFRunLoopDoSource1</strong> 和 <strong>__CFRunLoopDoBlocks</strong>。</p>
+<p>前两个是用来标志是否存在需要处理的事件，如果存在，则调用第三个方法，处理事件。</p>
+<p>Source 也分为2个版本 Source0 和 Source1。</p>
+<p>• <strong>Source0</strong> 只包含了一个回调（函数指针），它并不能主动触发事件。使用时，你需要先调用 CFRunLoopSourceSignal(source)，将这个 Source 标记为待处理，然后手动调用 CFRunLoopWakeUp(runloop) 来唤醒 RunLoop，让其处理这个事件。</p>
+<p>• <strong>Source1</strong> 包含了一个 mach_port 和一个回调（函数指针），这种 Source 能主动唤醒 RunLoop 的线程。</p>
+<h4 id="cfrunlooptimerref">CFRunLoopTimerRef</h4>
+<p><strong>CFRunLoopTimerRef</strong> 就很好理解了，它实际上是和 NSTimer 是同一个东西，也就是说，它就是一个定时器。这里简单介绍一下，后面计划有一篇关于 <strong>NSTimer</strong> 的文章。</p>
+<pre><code class="language-C">
+struct __CFRunLoopTimer {
+    CFRunLoopRef _runLoop;
+    CFMutableSetRef _rlModes;
+    CFTimeInterval _interval;		/* immutable */
+    CFTimeInterval _tolerance;          /* mutable */
+    CFAbsoluteTime _nextFireDate;
+    CFIndex _order;			/* immutable */
+    CFRunLoopTimerCallBack _callout;	/* immutable */
+    ...
+};
+
+</code></pre>
+<p>看上面的结构， <strong>__CFRunLoopTimer</strong> 主要包含下列相关：</p>
+<p><strong>_runLoop</strong>：NSTimer 必须和 runloop 配合使用，那么 timer 持有 runloop 是可以理解咯；<br>
+<strong>_interval</strong>： 间隔时间；<br>
+<strong>_tolerance</strong>： 容忍时间，也就是说允许延迟多长时间；<br>
+<strong>_nextFireDate</strong>：下次触发时间，理论上应该每次累加 _interval ，但是由于容忍度的存在，并不能两次相隔时间并不一定和 _interval 相等；<br>
+<strong>_order</strong>： 优先级；<br>
+<strong>_callout</strong>：timer 关联的回调事件；</p>
+<h4 id="__cfrunloopobserver">__CFRunLoopObserver</h4>
+<pre><code class="language-C">    struct __CFRunLoopObserver {
+    CFRunLoopRef _runLoop;
+    CFIndex _rlCount;
+    CFOptionFlags _activities;		/* immutable */
+    CFIndex _order;			/* immutable */
+    CFRunLoopObserverCallBack _callout;	/* immutable */
+};
+</code></pre>
+<p><strong>__CFRunLoopObserver</strong> 中除了常规的几个成员外， 比较重要的应该就是 <strong>_activities</strong> ， 它标识了 runloop 的状态，主要包括</p>
+<pre><code class="language-C">typedef CF_OPTIONS(CFOptionFlags, CFRunLoopActivity) {
+    kCFRunLoopEntry = (1UL &lt;&lt; 0),               // 即将进入 Loop
+    kCFRunLoopBeforeTimers = (1UL &lt;&lt; 1),        // 即将处理 Timers
+    kCFRunLoopBeforeSources = (1UL &lt;&lt; 2),       // 即将处理 Sources
+    kCFRunLoopBeforeWaiting = (1UL &lt;&lt; 5),       // 即将进入休眠
+    kCFRunLoopAfterWaiting = (1UL &lt;&lt; 6),        // 刚从休眠中唤醒
+    kCFRunLoopExit = (1UL &lt;&lt; 7),                // 即将退出Loop
+    kCFRunLoopAllActivities = 0x0FFFFFFFU
+};
+
+</code></pre>
+<p>通过这些状态，我们可以判断出 Loop 正处于什么状态，并且可以根据状态不同而做相应的事件，比如监听 <code>kCFRunLoopBeforeWaiting</code>， 在这将在异步线程渲染好的UI在主线程进行更新，从而避免出现主线程阻塞，增加页面流畅度等等。</p>
+<p>好了，相关的结构体已经介绍完</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[5月面试总结]]></title>
+        <id>https://blog.wutao.xyz/post/5-yue-mian-shi-zong-jie/</id>
+        <link href="https://blog.wutao.xyz/post/5-yue-mian-shi-zong-jie/">
+        </link>
+        <updated>2018-06-10T06:55:37.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="5月面试总结">5月面试总结</h1>
+<blockquote>
+<p>劳动节假期之后第一天，公司CEO开会宣布因为项目投入产出比没有达到预期，下一笔投资不会到账，公司资金链宣告断裂。我正式进入求职阶段。。。虽然说已经5月份了。。。</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="5月面试总结">5月面试总结</h1>
+<blockquote>
+<p>劳动节假期之后第一天，公司CEO开会宣布因为项目投入产出比没有达到预期，下一笔投资不会到账，公司资金链宣告断裂。我正式进入求职阶段。。。虽然说已经5月份了。。。</p>
+</blockquote>
+<!-- more -->
+<h3 id="前期准备">前期准备</h3>
+<p>因为此次求职并不是主动的，来的比较突然，所以需要一些时间来梳理自己的知识体系，回顾一些基础的知识。于是花了几天时间熟悉面试题。</p>
+<h3 id="简历投递顺序">简历投递顺序</h3>
+<p>不要海投，不要海投，不要海投，重要的事情说三遍。<br>
+先整体看一下最近的求职市场，学会评估哪些招聘是的确缺人，而哪些只是常年挂着。<br>
+筛选出一些比较感兴趣的公司，列出优先级，由低到高，先投递一批，等到回复后再投递另一批，这样主要是为了给自己一些时间熟悉面试，毕竟不管怎样准备，总会有疏漏的地方，先通过面试一批公司，让自己尽快进入状态。</p>
+<h3 id="简历投递渠道">简历投递渠道</h3>
+<p>对于没有大厂经验的开发者来说，<strong>拉钩</strong> 并不是一个值得关注的地方，基本投递后了无音讯或者几天后标记为不合适。</p>
+<p>论坛水友的内推，V2EX里企业HR的招聘贴，BOSS直聘都是不错的选择。作为参考，结合这求职期间的面试邀请,大致的比例是 2：2：6。</p>
+<h3 id="关于简历内容">关于简历内容</h3>
+<p>关于简历中的内容，我的建议是把自己能 show 的东西写出来，因为无论公司是否有 iOS 开发者，对于我们来说，第一关都是 HR，看似专业的术语会很大几率影响 HR 的判断，毕竟  ”iOS 程序员的简历是最多的“ 😂。<br>
+当然，如果你能将简历直接递交到用人部门主管手中（包括邮箱，微信等等）那就再好不过了。</p>
+<p>另一方面，我们不能为了秀而秀，单纯为了秀而不顾自己水平的乱写，我只能说陈独秀，你坐下。。。</p>
+<p>任何关于招聘总结的帖子中，”熟悉简历中的技术点“ 永远都是最重要的点，你想，总不能被自己简历中的知识点难倒吧， 想想那尴尬的沉默。。。</p>
+<p>只要你面试的不是实习生或者初级工程师， 那么你最好考虑一下自己的擅长方向，比如 UI精通，架构精通。因为开发者不可能只沉浸于业务，你得有一方面的专长，这是和其他竞争者拉开差距的地方，很不幸，我在本次的求职中，因为这个原因错失了两个还算不错的工作机会。</p>
+<h3 id="关于面试过程">关于面试过程</h3>
+<p>一天面试 1-2 家公司是比较合理的安排，不建议超过2家。经历有限，一家靠谱的公司，基本面试流程都在2个小时左右，早晨一家，面试完，吃个午饭休息一会，到另一家，这样时间还算是比较充裕，自己也有个缓冲时间，若一天都在赶着面试，那自己的状态又还有几分呢？</p>
+<p>正常面试环节一般是 笔试-团队主程面-技术主管面-HR面， 完整是这样，但是根据每个公司不同的情况会有所筛减，不过 <strong>技术主管</strong> 和 <strong>HR</strong> 是必不可少的。</p>
+<p>如果面试环节完整，那么有两个环节是必须重视的。</p>
+<ul>
+<li>
+<p>团队主程面试<br>
+在这一面中，你直接面对的就是今后的同事（当然前提是通过面试），这类人有个共同的特点-不希望招一个比平均水准差的。尽量减少团队的培训成本。都希望你是一个可以快速理解项目，快速加入开发流程的人。<br>
+所以，你必须对他提到的问题做到 90% 的对答如流，要不然你可能进不了下一轮；</p>
+</li>
+<li>
+<p>HR面<br>
+在HR面中，其实没什么可说的，如果你足够优秀，那么不用担心，如果你只是在平均水准之上，那么你可能得给 HR 一个 <strong>稳定</strong> 的印象， 所谓 <strong>稳定</strong> 其实就是不要频繁跳槽，一般两年一次是在接受范围内。</p>
+<p>最后，在每次面试结束后，一定要主动询问面试官，本次面试中，他觉得你比较不足的地方，这些能帮助你在后面的面试中，表现的更好。</p>
+</li>
+</ul>
+<h3 id="关于最近的面试题">关于最近的面试题</h3>
+<p>这半个月的面试过程中，主要涉及到下面的问题：</p>
+<ul>
+<li>各家组件化方案的优劣不同；</li>
+<li>性能优化；</li>
+<li>runtime相关原理；</li>
+<li>weak的实现原理；</li>
+<li>属性关键字修饰；</li>
+<li>项目中关于网络层的优化；</li>
+<li>Runloop相关；</li>
+<li>多线程各种方案对比；</li>
+<li>第三方库原理；</li>
+<li>图片解码是干什么？</li>
+<li>iOS中事件处理流程；</li>
+<li>分类本质；</li>
+<li>block相关；</li>
+<li>锁相关；</li>
+<li>kvo&amp;kvc；</li>
+</ul>
+<h3 id="总结">总结</h3>
+<p>找工作真的很累，尤其是在5月。。。。<br>
+关于知识积累，一定要注意平时容易忽略的地方，比如说 为什么 <strong>SDWebImage</strong> 中下载图片完成后需要将其解码？<br>
+在可以快速高效完成日常业务后，一定要选择一个方向，要有所精通。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[简单的 JS 与 原生交互实现上传图片的需求]]></title>
+        <id>https://blog.wutao.xyz/post/jian-dan-de-js-yu-yuan-sheng-jiao-hu-shi-xian-shang-chuan-tu-pian-de-xu-qiu/</id>
+        <link href="https://blog.wutao.xyz/post/jian-dan-de-js-yu-yuan-sheng-jiao-hu-shi-xian-shang-chuan-tu-pian-de-xu-qiu/">
+        </link>
+        <updated>2018-04-08T06:58:47.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="前文">前文</h1>
+<p>近期由于公司业务发展的需求，个人从 iOS开发 转为 半iOS 半前端😂。<br>
+没人带，只能自学，自学的坏处在于，有很多坑是要自己摔进去，再爬出来。</p>
+]]></summary>
+        <content type="html"><![CDATA[<h1 id="前文">前文</h1>
+<p>近期由于公司业务发展的需求，个人从 iOS开发 转为 半iOS 半前端😂。<br>
+没人带，只能自学，自学的坏处在于，有很多坑是要自己摔进去，再爬出来。</p>
+<!-- more --> 
+<h1 id="需求">需求</h1>
+<p>将一个报修界面（类似于反馈）改版，并将新版界面的实现由原生迁移到H5。如下图<br>
+<img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fpkdfswwxdj30po19gwjb.jpg" alt="img" loading="lazy"></p>
+<p>现在的需求是，点击加号图片：</p>
+<ul>
+<li>调用系统拍照或者相册，然后将图片交给H5显示；</li>
+<li>并在H5接收到时，进行阿里云 <code>OSS</code> 直传；</li>
+</ul>
+<h1 id="实现">实现</h1>
+<h3 id="1-调用系统拍照或者相册然后将图片交给h5显示">1、调用系统拍照或者相册，然后将图片交给H5显示</h3>
+<p>已知的方法有两种：</p>
+<ol>
+<li>使用<code>&lt;input&gt;</code>标签，使用H5直接调用（在iOS上可以调用，但在Android上无法调用，Pass）</li>
+<li>使用 <code>JSBridge</code> 进行 js 与原生交互。</li>
+</ol>
+<p>现在的问题是选择一个兼容三端的JSBridge库（虽然原生都有方法进行交互，使用封装好的，更符合实际）。</p>
+<p>恰好前段时间在掘金看到 <a href="https://github.com/wendux/DSBridge-IOS/blob/master/readme-chs.md">DSBridge</a>，学习了一下，所以这次就直接拿过来用了。</p>
+<p>DSBridge 的使用，这里就不介绍了，可以直接点击👆的链接查看。</p>
+<p>大致代码如下：</p>
+<pre><code class="language-Objective-c">#JSAPI
+
+// js 调用原生
+- (NSString *)chooseImageFromMobile:(NSString *) msg {
+  // 使用block回调，通知Controller
+  if (self.chooseImage) {
+    self.chooseImage();
+  }
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+
+- (NSString *)showRepairPendding:(NSString *) msg {
+  [SVProgressHUD showWithStatus:@&quot;正在处理中...&quot;];
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+
+// 服务端返回请求错误时， js调用原生
+- (NSString *)showRepairError:(NSString *) msg {
+  [SVProgressHUD showImage:nil status:msg];
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+
+// 服务端返回报修成功时， js调用原生
+- (NSString *)showRepairSuccess:(NSString *) msg {
+  [SVProgressHUD dismiss];
+  return [msg stringByAppendingString:@&quot;[ syn call]&quot;];
+}
+</code></pre>
+<pre><code># ViewController
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+  @weakify(self)
+  self.repairApi.chooseImage = ^(){
+    @strongify(self)
+    [self changeHeader];
+  };
+    
+}
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    @weakify(self);
+  [picker dismissViewControllerAnimated:YES completion:^{
+    @strongify(self)
+    UIImage *icon = info[UIImagePickerControllerOriginalImage];
+    NSData *imgData = UIImageJPEGRepresentation(icon,0.1);
+    NSString *data = [imgData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    // 将data拼接成 img src 能识别的标志。
+    NSString *source = [NSString stringWithFormat:@&quot;data:image/png;base64,%@&quot;, data];
+    [self.webView callHandler:@&quot;addPicture&quot; arguments:@[source] completionHandler:^(id  _Nullable value) {
+      NSLog(@&quot;%@&quot;,value);
+    }];
+  }];
+}
+
+</code></pre>
+<p>接下来只要在 js 中调用 OC 中的方法就可以了</p>
+<pre><code class="language-JavaScript">
+// 注册	addPicture 方法，接受从 OC 传过来的参数
+dsBridge.register(&quot;addPicture&quot;, function(data) {
+		// TODO
+		// 从服务端获取直传 accessid 和 hosturl 等参数
+	  return data;
+});
+        
+</code></pre>
+<h1 id="总结">总结</h1>
+<p>这个需求的核心就是 JS 与 原生之间的交互，只要找对下手方向，那么剩下就是码代码了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[（译）对于 Objective-C 来说 Unit Testing 的价值是什么？]]></title>
+        <id>https://blog.wutao.xyz/post/yi-dui-yu-objective-c-lai-shuo-unit-testing-de-jie-zhi-shi-shi-me/</id>
+        <link href="https://blog.wutao.xyz/post/yi-dui-yu-objective-c-lai-shuo-unit-testing-de-jie-zhi-shi-shi-me/">
+        </link>
+        <updated>2017-09-26T02:13:55.000Z</updated>
+        <summary type="html"><![CDATA[<p>最大的问题是 “对于 Objective-C 来说 Unit Testing 的价值是什么？”</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>最大的问题是 “对于 Objective-C 来说 Unit Testing 的价值是什么？”</p>
+<!-- more -->
+<p>服务端的小伙伴会 Mock 整个数据库，仅仅为了测试一条类似于 “Hello World” 的 SQL 语句。<br>
+在 iOS 中，你需要如此的仔细吗？这大概是不需要的。<br>
+你需要将单元测试覆盖到 iOS 项目中的每一行代码吗？这毫无疑问是不需要的。</p>
+<p>那么，让我们来看下，你应该怎样决定你的测试计划。</p>
+<p>单元测试有两个目的：</p>
+<ul>
+<li>首先也是最重要的（从我的观点来说）它可以帮你保持类的小而精。</li>
+<li>其次，它可以为你提供自动化测试，这是非常有用的。</li>
+</ul>
+<p>为什么我这么说？<br>
+如果你尝试编写一个类去通过某个 API 来获取数据，你会从对它行为的一些猜测来开始开发。<br>
+使用这个类，会依赖这些假设。假如你过了几个月忘记这些假设是什么，那么如果你更改了关于网络请求的代码，你很有可能在某个地方改变了之前的逻辑。这些可能发生在你毫不知情的情况下。</p>
+<p>你应该通过手动还是自动去测试你的 App？它并不意味着你需要将单元测试覆盖整个 APP，但是在发版本之前，你应该测试一些关键之处，那么为什么还要通过手动做这些呢而不选择自动测试呢？</p>
+<p><em>Matt Gemmell</em> 曾经写过 “thou shalt suffer no bugs to ship”（发版时必须不要有任何 Bug），我认为他说的很对，并且我也是这样做的 。他也说到，无论你用哪种机制去保证在发版时没有 bug，你只是需要有一种方法。Unit Tests， UI Acceptance Tests, 或者所有的测试都通过手动解决（但是这将会花费大量时间）。 Unit Test 或者 UAT 更加迅速。</p>
+<p>上面说的所有都是 “对于 Objective-C 来说 Unit Testing 的价值是什么？” 这个话题的开场白。<br>
+让我们来思考一个好的架构的 iOS app。它被划分为三个部分： Model，View，Controller。</p>
+<p><img src="//upload-images.jianshu.io/upload_images/664484-1b495266b14976c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
+426D1328D1E744999A88979FAF12C2C2.png</p>
+<p>￼<br>
+我有说 three parts？ 我的意思是 three-ish（暂时没搞清楚什么意思🤣）。 App 需要 API 的调用，你也需要写网络请求的代码。有的时候，代码会从 Model 中分离，有时候也会包含在 Model 中，在可避免的情况下它应该从不包含在 View 中，或者包含在 Controller 中（这应该永远是可避免的）。</p>
+<p>View 和 Controller 自检的相互作用不利于单元测试— 这些地方 UAT 可以帮你解决这个问题。 这篇文章并不会涉及这些。</p>
+<p>橙色的区域是单元测试最有作用的地方。Model 和网络请求代码中。</p>
+<p>你可以很容易的测试网络请求代码，去验证你第一次写它的时候关于它的假设。如果你的 Model 比较精炼，你可能不会去测试。然而，这些 models 可能在任何地方被创建和修改，所以，你应该确保测试这些代码。</p>
+<p>综上所述：单元测试 Models 和网络请求代码。如果你觉得值得，那么用 UAT 去测试其他的。可能手动测试 Views 和 Controllers 更加适合你的工作，特别是在比较小型的 app 中。</p>
+<p>最后，无论你用哪种测试，请记录它，并且编成文档。这样你就可以在发版之前手动测试它了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[译]在Swift中进行快速灵活的测试驱动开发]]></title>
+        <id>https://blog.wutao.xyz/post/yi-zai-swift-zhong-jin-xing-kuai-su-ling-huo-de-ce-shi-qu-dong-kai-fa/</id>
+        <link href="https://blog.wutao.xyz/post/yi-zai-swift-zhong-jin-xing-kuai-su-ling-huo-de-ce-shi-qu-dong-kai-fa/">
+        </link>
+        <updated>2017-08-20T07:00:08.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<ul>
+<li>原文地址：<a href="https://www.appcoda.com/tdd-quick-nimble/">Test Driven Development (TDD) in Swift with Quick and Nimble</a></li>
+<li>原文作者：<a href="https://www.appcoda.com/author/lawrencetan/">LAWRENCE TAN</a></li>
+</ul>
+</blockquote>
+<p>在移动开发领域，编写测试用例并不常见，事实上，大多数移动开发团队为了加快开发速度，选择性的放弃了它。</p>
+<p>作为一个“成熟的”开发者，我尝到了编写测试用例的好处，它不仅仅能保证你的 app 的功能符合预期，它也能通过“锁住”你的代码来阻止其他开发者改变你的代码。而且测试代码和实现代码之间的联系也有助于新的开发者比较容易地理解和接手项目。</p>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<ul>
+<li>原文地址：<a href="https://www.appcoda.com/tdd-quick-nimble/">Test Driven Development (TDD) in Swift with Quick and Nimble</a></li>
+<li>原文作者：<a href="https://www.appcoda.com/author/lawrencetan/">LAWRENCE TAN</a></li>
+</ul>
+</blockquote>
+<p>在移动开发领域，编写测试用例并不常见，事实上，大多数移动开发团队为了加快开发速度，选择性的放弃了它。</p>
+<p>作为一个“成熟的”开发者，我尝到了编写测试用例的好处，它不仅仅能保证你的 app 的功能符合预期，它也能通过“锁住”你的代码来阻止其他开发者改变你的代码。而且测试代码和实现代码之间的联系也有助于新的开发者比较容易地理解和接手项目。</p>
+ <!-- more --> 
+<h2 id="测试驱动开发-tdd">测试驱动开发（ TDD ）</h2>
+<p><strong>测试驱动开发（ TDD ）</strong> 就像一个新的编码艺术。它遵守下面的递归循环：</p>
+<ul>
+<li>写一个能导致失败的测试用例</li>
+<li>为通过上述测试写一些代码</li>
+<li>重构</li>
+<li>重复上述操作，直到我们满意</li>
+</ul>
+<p>让我为你展示一个简单的例子，首先思考一下下面函数的实现：</p>
+<pre><code>func calculateAreaOfSquare(w: Int, h: Int) -&gt; Double { }
+</code></pre>
+<p><strong>测试 1:</strong><br>
+给两个数 <code>w=2</code>，<code>h=2</code>，预期的面积应该是 <code>4</code>。在这个例子中，这个测试会失败，因为这个函数目前并没有实现。</p>
+<p>接着我们继续写：</p>
+<pre><code>func calculateAreaOfSquare(w: Int, h: Int) -&gt; Double { return w * h }
+</code></pre>
+<p>测试 1 现在通过了！哇哦！</p>
+<p><strong>测试 2:</strong><br>
+给两个数 <code>w=-1</code>，<code>h=-1</code>，预期的面积应该是 <code>0</code>。在这个例子中，测试会失败，因为基于目前函数的实现，它会返回 <code>1</code>。</p>
+<p>让我们继续：</p>
+<pre><code>func calculateAreaOfSquare(w: Int, h: Int) -&gt; Double { 
+    if w &gt; 0 &amp;&amp; h &gt; 0 { 
+        return w * h 
+    } 
+    
+    return 0
+}
+</code></pre>
+<p>测试 2 现在也通过了！哇哦！</p>
+<p>这些操作可以继续下去，一直到你处理了所有的极限情况。接下来你就应该重构你的代码，在保证所有的测试用例都能通过的情况下，让它看起来更好。</p>
+<p>基于我们上面讨论的，我们意识到，TDD 不仅仅能让我们写出高质量的代码，它也能让我们更早的处理极限情况。另外它还能让两个开发者通过一个写测试用例，另一个写通过测试代码的方式来进行结对编程。你可以在 <a href="https://medium.com/@dotariel/5-reasons-i-love-test-driven-development-fc257d9093e2#.7eejsiuwg">Dotariel’s Blog Post</a> 找到更多有关于 TDD 的信息。</p>
+<h2 id="你会在本教程中学到什么">你会在本教程中学到什么？</h2>
+<p>在教程的结尾，你可以获得以下的知识：</p>
+<ul>
+<li>对 <strong>TDD 很棒</strong>，有一个基础的认知。</li>
+<li>对 <strong>Quick 和 Nimble 如何工作</strong>， 有一个基础的认知。</li>
+<li>知道如何使用 <strong>Quick 和 Nimble 进行 UI 测试</strong>。</li>
+<li>知道如何使用 <strong>Quick 和 Nimble 进行单元测试</strong>。</li>
+</ul>
+<h2 id="前期准备">前期准备</h2>
+<p>在我们继续下去之前，有些前期准备：</p>
+<ul>
+<li>Swift3 环境和 8.3.3 版本的 Xcode</li>
+<li>有 Swift 和 iOS 开发的经验。</li>
+</ul>
+<h2 id="配置我们的项目">配置我们的项目</h2>
+<p>假设我们要开发一个能够列出电影的简单的电影类 app 。 首先打开 Xcode 并创建一个叫做 <strong>MyMovies</strong> 的单视图应用。勾选上 <code>Unit Tests</code>，一旦我们配置好库和视图控制器，我们将重新访问这个目标。</p>
+<figure data-type="image" tabindex="1"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-1.png" alt="TDD Sample Project" loading="lazy"></figure>
+<p>下一步，删除已存在的 <code>ViewController</code> 并且重新创建一个继承于<code>UITableViewController</code> 的新类，把它命名为<code>MoviesTableViewController</code>。</p>
+<p>将 <code>Main.storyboard</code> 中的 <code>ViewController</code> 删除，将一个新的<code>UITableViewController</code> 拖进去，让它继承于<code>MoviesTableViewController</code>。</p>
+<p>然后，将 cell 的样式改为 <code>Subtitle</code>，并且将 identifier 改为 <code>MovieCell</code>，这样，我们后面就可以同时展示电影的标题和类型了。</p>
+<figure data-type="image" tabindex="2"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-3.png" alt="" loading="lazy"></figure>
+<p>不要忘了将这个视图控制器标记为 <code>initial view controller</code>。</p>
+<figure data-type="image" tabindex="3"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-5.png" alt="" loading="lazy"></figure>
+<p>这个时候，你的代码看上去应该像下面一样：</p>
+<pre><code>import UIKit
+ 
+class MoviesTableViewController: UITableViewController {
+ 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+        return 0
+    }
+}
+</code></pre>
+<h3 id="电影数据">电影数据</h3>
+<p>现在，我们需要造出一些电影数据，一会儿，我们需要它们去填充我们的视图。</p>
+<h4 id="genre-enum">Genre Enum</h4>
+<pre><code>enum Genre: Int {
+    case Animation
+    case Action
+    case None
+}
+</code></pre>
+<p>这个枚举用来标记电影的类别。</p>
+<h4 id="movie-struct">Movie Struct</h4>
+<pre><code>struct Movie {
+    var title: String
+    var genre: Genre
+}
+</code></pre>
+<p>这个电影数据类型用来描述我们需要的电影数据。</p>
+<pre><code>class MoviesDataHelper {
+    static func getMovies() -&gt; [Movie] {
+        return [
+            Movie(title: &quot;The Emoji Movie&quot;, genre: .Animation),
+            Movie(title: &quot;Logan&quot;, genre: .Action),
+            Movie(title: &quot;Wonder Woman&quot;, genre: .Action),
+            Movie(title: &quot;Zootopia&quot;, genre: .Animation),
+            Movie(title: &quot;The Baby Boss&quot;, genre: .Animation),
+            Movie(title: &quot;Despicable Me 3&quot;, genre: .Animation),
+            Movie(title: &quot;Spiderman: Homecoming&quot;, genre: .Action),
+            Movie(title: &quot;Dunkirk&quot;, genre: .Animation)
+        ]
+    }
+}
+</code></pre>
+<p>这个电影数据助手类可以帮助我们直接调用 <code>getMovies</code> 方法，所以我们可以在单次调用中就可以获得需要的数据。</p>
+<p>提醒一下，到目前为止，我们并没有在项目中做任何有关 TDD 的配置。现在，让我们开始学习这篇教程的主要内容 Quick 和 Nimble 吧！</p>
+<h2 id="quick-nimble">Quick &amp; Nimble</h2>
+<p><strong>Quick</strong> 是一个建立在 XCTest 上，为 Swift 和 Objective-C 设计的测试框架.<br>
+它通过 <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL</a> 去编写非常类似于 <a href="https://github.com/rspec/rspec">RSpec</a> 的测试用例。</p>
+<p><strong>Nimble</strong> 就像是 <strong>Quick</strong> 的合作伙伴，它提供了匹配器作为断言。关于它的更多信息，请查看<a href="https://github.com/Quick/Quick">这儿</a></p>
+<h3 id="使用carthage-安装-quick-nimble">使用Carthage 安装 Quick &amp; Nimble</h3>
+<p>随着 Carthage 库的增长，相比 Cocoapods 我越来越喜欢 Carthage，因为它更去中心化。即使某一个库编译失败，整个项目依然可以编译成功</p>
+<pre><code>#CartFile.private
+github &quot;Quick/Quick&quot;
+github &quot;Quick/Nimble&quot;
+</code></pre>
+<p>上面就是 <code>CartFile.private</code> 中的内容，我通过它来安装依赖。如果你不熟悉 Carthage，先看看<a href="https://github.com/Carthage/Carthage">它</a>吧.</p>
+<p>将 <code>CartFile.private</code> 拖入你的项目目录，然后终端运行 <code>carthage update</code>。这个命令会克隆依赖，成功后，你可以在 <code>Carthage -&gt; Build -&gt; iOS</code> 找到它们。接着，将两个框架都添加到测试工程。你需要到 Build Phases 点击左上方的加号，并且选择 “New Copy Files Phase”。将它设置为 “Frameworks”，并且将两个框架都添加进去。</p>
+<p>现在所有的设置都搞定了！</p>
+<figure data-type="image" tabindex="4"><img src="http://www.appcoda.com/wp-content/uploads/2017/08/tdd-6.png" alt="" loading="lazy"></figure>
+<h2 id="编写测试用例-1">编写测试用例 #1</h2>
+<p>让我们开始编写第一个测试用例。已知的是我们有一个列表，一些电影数据。那么，我们怎么保证列表视图显示正确项目个数？是的！我们需要保证列表视图的 cell 行数应该和电影数据的个数保持一致。这就是我们第一个需要测试的地方。那么开始吧！进到 <code>MyMoviesTests</code> 将 XCTest 代码全部删掉，并且将 Quick 和 Nimble 引入进来！</p>
+<p>我们必须保证我们的类是 <code>QuickSpec</code> 的子类，当然 <code>QuickSpec</code> 也是 <code>XCTestCase</code>的子类。要清楚的是 <code>Quick</code> 和 <code>Nimble</code> 仍然是基于 <code>XCTest</code> 的。<br>
+最后，我们还有一件事需要做，那就是需要重写 <code>spec()</code> 函数， 关于这点，你可以查看 <a href="https://github.com/Quick/Quick/blob/master/Documentation/en-us/QuickExamplesAndGroups.md">set of example groups and examples</a>.</p>
+<pre><code>import Quick
+import Nimble
+ 
+@testable import MyMovies
+ 
+class MyMoviesTests: QuickSpec {
+    override func spec() {
+    }
+}
+</code></pre>
+<p>这个时候，你需要明白我们将使用一些 <code>it</code>， <code>describe</code> 和 <code>context</code> 来编写我们的测试。<br>
+<code>describe</code> 和 <code>context</code> 只是 <code>it</code> 示例的逻辑分组。</p>
+<h3 id="测试-1-预计-列表视图的行数-电影数据的个数">测试 #1 – 预计 列表视图的行数 = 电影数据的个数</h3>
+<p>首先，引入我们的视图控制器</p>
+<pre><code>import Quick
+import Nimble
+ 
+@testable import MyMovies
+ 
+class MyMoviesTests: QuickSpec {
+    override func spec() {
+        var subject: MoviesTableViewController!
+        
+        describe(&quot;MoviesTableViewControllerSpec&quot;) {
+            beforeEach {
+                subject = UIStoryboard(name: &quot;Main&quot;, bundle: nil).instantiateViewController(withIdentifier: &quot;MoviesTableViewController&quot;) as! MoviesTableViewController
+                
+                _ = subject.view
+            }
+        }
+    }
+}
+</code></pre>
+<p>需要注意的是，我们有一个对 <code>MyMovies</code> 的 <code>@testable</code> 引用，这行代码的目的是标记着我们在测试哪个项目，并且允许我们引用那里的类。由于我们需要测试控制器的视图层，所以需要从 storyboard 抓取一个实例。</p>
+<p><strong>describe</strong> 闭包开始了我的第一个为<code>MoviesTableViewController</code>而写的组合测试用例。</p>
+<p><strong>beforeEach</strong> 闭包将在在 <strong>describe</strong> 闭包中所有例子执行之前运行。所以你可以在其中写一些需要在 <code>MoviesTableViewController</code> 执行时首先运行的测试。</p>
+<p><code>_ = subject.view</code> 会将视图控制器放入内存，它类似于调用 <code>viewDidLoad</code>。</p>
+<p>最后，我们可以在 <code>beforeEach { }</code> 之后添加测试断言。比如：</p>
+<pre><code>context(&quot;when view is loaded&quot;) {
+    it(&quot;should have 8 movies loaded&quot;) {
+        expect(subject.tableView.numberOfRows(inSection: 0)).to(equal(8))
+   }
+}
+</code></pre>
+<p>让我们一步步来看。首先，我们有一个被标记为 <code>when view is loaded</code> 组合示例闭包 <code>context</code>；接着，我们还有一个主要的示例 <code>it should have 8 movies loaded</code>；然后，我们预计或者断言列表视图的 cell 有 8 行。通过按 CMD+U 或者 Product -&gt; Test 运行测试用例，然后你会在控制面板上看到下面信息：</p>
+<pre><code>MoviesTableViewController__when_view_is_loaded__should_have_8_movies_loaded] : expected to equal &lt;8&gt;, got &lt;0&gt;
+ 
+Test Case '-[MyMoviesTests.MoviesTableViewControllerSpec MoviesTableViewController__when_view_is_loaded__should_have_8_movies_loaded]' failed (0.009 seconds).
+</code></pre>
+<p>所以，你只是写了一个并不完善的测试用例。开始 TDD 吧！</p>
+<h2 id="完善测试用例-1">完善测试用例 #1</h2>
+<p>现在，回到 <code>MoviesTableViewController</code>，加载电影数据！ 然后再重新运行测试用例，接着，之前写的测试用例通过了！</p>
+<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+    return MoviesDataHelper.getMovies().count
+}
+ 
+override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: &quot;MovieCell&quot;)
+    return cell!
+}
+</code></pre>
+<p>总结一下，首先你写了一个不完善的测试，然后通过 3 行代码完善了它，并且测试通过了，这就是为什么我们将它称为测试驱动开发（TDD），一个能确保代码良好和高质量的方式。</p>
+<h2 id="编写测试用例-2">编写测试用例 #2</h2>
+<p>现在，是时候用第二个测试用例来结束这个教程了。<br>
+我们意识到，当我们运行 app 的时候，我们只是在每个地方设置 “title” 和 “subtitle”。但是我们并没有验证它显示的是不是我们实际的数据！所以，为 UI 也写个测试用例吧。</p>
+<p>进入 spec 文件。 添加一个新的 <code>context</code> 并把它称为 <code>Table View</code>。从 列表视图抓取第一个 cell ，并且测试它展示的数据是否和实际应该展示的数据相同。</p>
+<pre><code>context(&quot;Table View&quot;) {
+    var cell: UITableViewCell!
+    
+    beforeEach {
+            cell = subject.tableView(subject.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
+    }
+        
+    it(&quot;should show movie title and genre&quot;) {
+        expect(cell.textLabel?.text).to(equal(&quot;The Emoji Movie&quot;))
+        expect(cell.detailTextLabel?.text).to(equal(&quot;Animation&quot;))
+     }
+}
+</code></pre>
+<p>测试运行后，会得到下面的失败信息。</p>
+<pre><code>MoviesTableViewController__Table_View__should_show_movie_title_and_genre] : expected to equal &lt;Animation&gt;, got &lt;Subtitle&gt;
+</code></pre>
+<p>来吧，让我们通过给 cell 相应的数据去展示来完善这个测试用例！</p>
+<h2 id="完善测试用例-2">完善测试用例 #2</h2>
+<p>因为 Genre 是枚举，我们需要为它添加不同的描述。所以我们需要更新 <code>Movie</code> 类：</p>
+<pre><code>struct Movie {
+    var title: String
+    var genre: Genre
+    
+    func genreString() -&gt; String {
+        switch genre {
+        case .Action:
+            return &quot;Action&quot;
+        case .Animation:
+            return &quot;Animation&quot;
+        default:
+            return &quot;None&quot;
+        }
+    }
+}
+</code></pre>
+<p>同样 <code>cellForRow</code> 方法也需要更新：</p>
+<pre><code>override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: &quot;MovieCell&quot;)
+    
+    let movie = MoviesDataHelper.getMovies()[indexPath.row]
+    cell?.textLabel?.text = movie.title
+    cell?.detailTextLabel?.text = movie.genreString()
+    
+    return cell!
+}
+</code></pre>
+<p>哇哦！第二个测试用例通过啦！此时，让我们看看能不能通过重构让代码更加清晰，当然，仍然是在保持测试用例可以通过的基础上。移除空函数，并且将 <code>getMovies()</code> 声明为计算属性。</p>
+<pre><code>class MoviesTableViewController: UITableViewController {
+ 
+    var movies: [Movie] {
+        return MoviesDataHelper.getMovies()
+    }
+    
+    // MARK: - Table view data source
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+        return movies.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -&gt; UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: &quot;MovieCell&quot;)
+        
+        let movie = movies[indexPath.row]
+        cell?.textLabel?.text = movie.title
+        cell?.detailTextLabel?.text = movie.genreString()
+        
+        return cell!
+    }
+}
+</code></pre>
+<p>试试吧，重新运行测试，它依然是可以通过的。</p>
+<h2 id="总结">总结</h2>
+<p>我们做了什么？</p>
+<ul>
+<li>我们为了检测电影数量，编写了第一个测试用例，测试 <em>未通过</em></li>
+<li>接着我们实现了加载电影的逻辑，然后测试 <em>通过</em></li>
+<li>为了检测是否显示了正确的数据，我们编写了第二个测试，测试 <em>未通过</em></li>
+<li>接着我们实现了显示逻辑，然后测试 <em>通过</em></li>
+<li>最后我们停止了测试，并且进行了 <em>重构</em></li>
+</ul>
+<p>这大概就是 TDD 的全部。你也可以在这个工程上去进行更多的尝试。如果你对教程有任何相关问题，请在下面留下相关评论以便让我知道。</p>
+<p>你可以在这找到相关<a href="https://github.com/lawreyios/MyMovies">源码</a></p>
+]]></content>
+    </entry>
+</feed>

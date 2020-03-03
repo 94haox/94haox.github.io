@@ -1,0 +1,301 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title> APP 的一次启动优化 | Gridea</title>
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title=" APP 的一次启动优化 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="前言
+当 App 迭代到一定阶段，业务逐渐增多，项目不断变大，启动时间优化是一个必经的阶段，这篇文章，我将从启动过程来提出几个优化点。
+
+强烈建议观看 wwdc 2016 相关视频 Optimizing App Startup Time
+开..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://blog.wutao.xyz">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+               APP 的一次启动优化
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-08-03
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="前言">前言</h1>
+<p>当 App 迭代到一定阶段，业务逐渐增多，项目不断变大，启动时间优化是一个必经的阶段，这篇文章，我将从启动过程来提出几个优化点。</p>
+<!-- more -->
+<p>强烈建议观看 wwdc 2016 相关视频 <a href="https://developer.apple.com/videos/play/wwdc2016/406/">Optimizing App Startup Time</a></p>
+<h1 id="开始">开始</h1>
+<p>先放两个启动时间对比，只是一般的数据，精准度没有很高，但是两个在同种条件下的耗时还是具有一定对比性.</p>
+<pre><code>// 一个新建的工程在 pre-main 期间的耗时数据
+Total pre-main time:  85.98 milliseconds (100.0%)
+         dylib loading time:  35.28 milliseconds (41.0%)
+        rebase/binding time:  12.73 milliseconds (14.8%)
+            ObjC setup time:   4.40 milliseconds (5.1%)
+           initializer time:  33.56 milliseconds (39.0%)
+</code></pre>
+<pre><code>// 苏宁智能的耗时数据
+Total pre-main time: 1.7 seconds (100.0%)
+         dylib loading time: 418.45 milliseconds (23.9%)
+        rebase/binding time: 111.41 milliseconds (6.3%)
+            ObjC setup time: 413.69 milliseconds (23.6%)
+           initializer time: 802.37 milliseconds (45.9%)
+</code></pre>
+<p>接下来，我们从上面的 log 开始分析在 App 启动过程中，做了哪些事情。</p>
+<h3 id="app-启动流程">APP 启动流程</h3>
+<p>这里的启动特指「冷启动」，这种启动是一种完整的启动流程，包括系统的进程创建。</p>
+<h4 id="启动时系统都做了那些事">启动时，系统都做了那些事？</h4>
+<p>从用户点击 APP 到首页显示，业界有多种不同的阶段划分方式，比较主流的是将其分为三个阶段：</p>
+<ul>
+<li>main() 函数执行前（pre-main阶段）；</li>
+<li>main() 函数执行后；</li>
+<li>首页渲染完成之后</li>
+</ul>
+<h4 id="main-函数启动前">main() 函数启动前</h4>
+<p>main() 函数启动前，我们一般称之为 pre-main 阶段，在这个阶段，objc 源码中无法debug，这个过程中主要是 dyld 工作，包括加载可执行文件，符号绑定等等 。</p>
+<p>在这里我们先不要仔细拆分整个流程，先从上面的 pre-main 启动时间分析的 log 来看一看这期间主要做了哪些事情：</p>
+<ul>
+<li>
+<p><code>dylib loading</code><br>
+加载所有的可执行文件 Mach-O 。</p>
+</li>
+<li>
+<p><code>rebase/binding</code><br>
+加载动态链接库 dyld，dyld 递归的加载所有的依赖动态库。并进行 rebase 指针调整和 bind 符号绑定。</p>
+</li>
+<li>
+<p><code>ObjC setup</code><br>
+Objc runtime 的初始处理，包括 Objc 相关类的注册、category 注册、selector 唯一性检查等。</p>
+</li>
+<li>
+<p><code>initializer</code><br>
+从名字可以看出，这里主要进行初始化。其中包括执行 + load() 方法。 attribute((constructor))  修饰的函数的调用、创建 C++ 静态全局变量。</p>
+</li>
+</ul>
+<h4 id="main-函数之后">main() 函数之后</h4>
+<p>这里指的是从 main() 执行开始，到 didFinishLaunchingWithOptions方法中 keyWindow 渲染执行完毕之后。</p>
+<p>这里主要是创建全局的 autoreleasepool 和渲染首屏相关的配置文件的读取，渲染的计算等等。</p>
+<h4 id="首屏渲染完成后">首屏渲染完成后</h4>
+<p>主要包含和非首屏页面渲染不相关的业务，模块的初始化，配置文件的读取等等。<br>
+这个阶段用户已经看到页面了，其实不影响首屏的数据时间，但是如果存在线程阻塞，那么还是会影响到用户的体验，还是要注重一下。</p>
+<h3 id="优化方向">优化方向</h3>
+<p>从启动流程的几个阶段来看，pre-main 和 main() 函数启动之后占的比重比较大，所以大部分关于时间的优化，我们都应该针对这些来做。</p>
+<h4 id="pre-main">pre-main</h4>
+<ul>
+<li>动态库的加载<br>
+上面的耗时日志中，我省略了项目中动态库的耗时显示，这里放两个项目中引用的两个动态库的加载时间的 log:</li>
+</ul>
+<pre><code>CloudyTrace_IOS :  84.64 milliseconds
+ZDKDynamicFramework :  15.28 milliseconds 
+</code></pre>
+<p>可以看到，动态库的耗时还是挺多的，其中 <em>CloudyTrace_IOS</em> 这个动态库的加载时间几乎和一个新建项目的 pre-main 阶段总耗时还多。并且每一个动态库本身也都有依赖关系。<br>
+苹果在 wwdc 上也建议少使用动态库，并且尽可能将动态库进行合并，我们在这里可以做的措施有两个：<br>
+1、合并动态库，减少动态库的个数，这里推荐一个 grab 开源的一个<a href="https://github.com/grab/cocoapods-pod-merge">工具</a>，可以将多个依赖合并；<br>
+2、将依赖转变未静态库，只需要在 <strong>Podfile</strong> 中添加下面代码，但是需要注意的是，它只支持 1.7.x 以上版本</p>
+<pre><code class="language-ruby"># Add these in your Podfile (available for CocoaPods v1.7.x+)
+
+target 'YourApp' do
+    # all you pods here...
+end
+
+pre_install do |installer|
+  puts &quot;Make pods linked statically except reserved pods&quot;
+  installer.pod_targets.each do |pod|
+    if !keep_dynamically_linked.include?(pod.name)
+      puts &quot;Override the static_framework? method for #{pod.name}&quot;
+      def pod.build_type;
+        Pod::Target::BuildType.static_framework
+      end
+    end
+  end
+end
+</code></pre>
+<ul>
+<li>ObjC setup &amp; initializer</li>
+</ul>
+<p>在这两个过程中，dyld 会将已经加载到内存中的二进制数据交给 runtime 加载为 objc 定义的结构。通过 <code>call_load_methods</code> 遍历所有的类，在遍历期间，通过 <code>call_class_loads</code> 和 <code>call_class_loads</code> 来调用 class 的 <code>+load</code> 方法和 Category 的 <code>+load</code> 方法。这也就说明，类越多，方法越多，则耗时越多。<br>
+要特别指出的是在一个 <code>+load</code> 方法里，进行运行时方法替换操作会带来4毫秒的消耗。</p>
+<p>关于这个阶段的优化自然对应的就是：</p>
+<ul>
+<li>删除无用的类和无用的方法，减少类的数目</li>
+<li>所以尽量将 <code>+load</code> 方法，替换为 <code>initialize</code>方法。降低<code>+load</code>的执行次数</li>
+<li>控制 C++ 全局变量的数量。</li>
+</ul>
+<h4 id="main-函数调用之后">main() 函数调用之后</h4>
+<p>我们经常将第三方库的注册和初始化放在 didFinishLaunchingWithOptions 中，在这个阶段，我们需要的优化点其实就是：<br>
+梳理业务，将首屏渲染用不到的业务放到渲染之后去做，将不需要立即初始化和不需要在主线程初始化的，都放在异步进行延时加载。</p>
+<p>最后放上第一阶段优化后的 log：</p>
+<pre><code>// 苏宁智能的耗时数据
+Total pre-main time: 822.32 seconds (100.0%)
+         dylib loading time: 210.71 milliseconds (25.6%)
+        rebase/binding time:  60.37 milliseconds (7.3%)
+            ObjC setup time: 87.20 milliseconds (10.6%)
+           initializer time: 464.04 milliseconds (56.4%)
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a></li>
+<li><a href="#%E5%BC%80%E5%A7%8B">开始</a><br>
+*
+<ul>
+<li><a href="#app-%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B">APP 启动流程</a>
+<ul>
+<li><a href="#%E5%90%AF%E5%8A%A8%E6%97%B6%E7%B3%BB%E7%BB%9F%E9%83%BD%E5%81%9A%E4%BA%86%E9%82%A3%E4%BA%9B%E4%BA%8B">启动时，系统都做了那些事？</a></li>
+<li><a href="#main-%E5%87%BD%E6%95%B0%E5%90%AF%E5%8A%A8%E5%89%8D">main() 函数启动前</a></li>
+<li><a href="#main-%E5%87%BD%E6%95%B0%E4%B9%8B%E5%90%8E">main() 函数之后</a></li>
+<li><a href="#%E9%A6%96%E5%B1%8F%E6%B8%B2%E6%9F%93%E5%AE%8C%E6%88%90%E5%90%8E">首屏渲染完成后</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91">优化方向</a>
+<ul>
+<li><a href="#pre-main">pre-main</a></li>
+<li><a href="#main-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%B9%8B%E5%90%8E">main() 函数调用之后</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/ru-he-chuang-jian-yi-ge-xcode-server-bot-zi-dong-da-bao-ji-qi-ren/">
+              <h3 class="post-title">
+                如何创建一个 Xcode server Bot （自动打包机器人）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://blog.wutao.xyz/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
