@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title> APP 的一次启动优化 | Gridea</title>
-<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583239435085">
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1583841797596">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title=" APP 的一次启动优化 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
@@ -25,7 +25,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.wutao.xyz">
-  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583239435085" alt="">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1583841797596" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -161,8 +161,8 @@ ZDKDynamicFramework :  15.28 milliseconds
 </code></pre>
 <p>可以看到，动态库的耗时还是挺多的，其中 <em>CloudyTrace_IOS</em> 这个动态库的加载时间几乎和一个新建项目的 pre-main 阶段总耗时还多。并且每一个动态库本身也都有依赖关系。<br>
 苹果在 wwdc 上也建议少使用动态库，并且尽可能将动态库进行合并，我们在这里可以做的措施有两个：<br>
-1、合并动态库，减少动态库的个数，这里推荐一个 grab 开源的一个<a href="https://github.com/grab/cocoapods-pod-merge">工具</a>，可以将多个依赖合并；<br>
-2、将依赖转变未静态库，只需要在 <strong>Podfile</strong> 中添加下面代码，但是需要注意的是，它只支持 1.7.x 以上版本</p>
+1、合并动态库，减少动态库的个数，这里推荐一个 grab 开源的一个<a href="https://github.com/grab/cocoapods-pod-merge">工具</a>，可以将多个依赖合并；</p>
+<p>2、将依赖转变未静态库，只需要在 <strong>Podfile</strong> 中添加下面代码，但是需要注意的是，它只支持 1.7.x 以上版本</p>
 <pre><code class="language-ruby"># Add these in your Podfile (available for CocoaPods v1.7.x+)
 
 target 'YourApp' do
@@ -181,6 +181,7 @@ pre_install do |installer|
   end
 end
 </code></pre>
+<p>这种方式可能会存在一些问题，比如两个动态库中存在相同命名的文件，这样会引起冲突，并且 github 中也有一些相关的 issues，存在一些开发者再使用过程不起效果的问题。</p>
 <ul>
 <li>ObjC setup &amp; initializer</li>
 </ul>

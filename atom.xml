@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.wutao.xyz</id>
     <title>Gridea</title>
-    <updated>2020-03-03T12:43:56.733Z</updated>
+    <updated>2020-03-10T12:03:25.019Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.wutao.xyz"/>
     <link rel="self" href="https://blog.wutao.xyz/atom.xml"/>
@@ -143,8 +143,8 @@ ZDKDynamicFramework :  15.28 milliseconds
 </code></pre>
 <p>可以看到，动态库的耗时还是挺多的，其中 <em>CloudyTrace_IOS</em> 这个动态库的加载时间几乎和一个新建项目的 pre-main 阶段总耗时还多。并且每一个动态库本身也都有依赖关系。<br>
 苹果在 wwdc 上也建议少使用动态库，并且尽可能将动态库进行合并，我们在这里可以做的措施有两个：<br>
-1、合并动态库，减少动态库的个数，这里推荐一个 grab 开源的一个<a href="https://github.com/grab/cocoapods-pod-merge">工具</a>，可以将多个依赖合并；<br>
-2、将依赖转变未静态库，只需要在 <strong>Podfile</strong> 中添加下面代码，但是需要注意的是，它只支持 1.7.x 以上版本</p>
+1、合并动态库，减少动态库的个数，这里推荐一个 grab 开源的一个<a href="https://github.com/grab/cocoapods-pod-merge">工具</a>，可以将多个依赖合并；</p>
+<p>2、将依赖转变未静态库，只需要在 <strong>Podfile</strong> 中添加下面代码，但是需要注意的是，它只支持 1.7.x 以上版本</p>
 <pre><code class="language-ruby"># Add these in your Podfile (available for CocoaPods v1.7.x+)
 
 target 'YourApp' do
@@ -163,6 +163,7 @@ pre_install do |installer|
   end
 end
 </code></pre>
+<p>这种方式可能会存在一些问题，比如两个动态库中存在相同命名的文件，这样会引起冲突，并且 github 中也有一些相关的 issues，存在一些开发者再使用过程不起效果的问题。</p>
 <ul>
 <li>ObjC setup &amp; initializer</li>
 </ul>
