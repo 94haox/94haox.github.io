@@ -2,24 +2,20 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | Gridea</title>
+<title>探究 Runloop 事件循环机制 | Gridea</title>
 <link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584446945455">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="关于 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="探究 Runloop 事件循环机制 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="一个野路子出生的非典型程序员，喜欢猫，发量不稀少，哈哈哈哈
-个人作品：
-iOS：
-短信吞噬者
-垃圾短信屏蔽 App，主要通过机器学习，识别短信文本，自主屏蔽垃圾信息。
-Funnyfm
-播客客户端，简约不简单。
+    <meta name="description" content="前言
+上一篇，笔者回顾了 Runloop 的底层数据结构，本篇文章来让我们了解一下，iOS 系统是怎样利用 Runloop 处理事件的。
+入口函数
 ..." />
-    <meta name="keywords" content="" />
+    <meta name="keywords" content="底层原理" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,36 +77,56 @@ Funnyfm
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              探究 Runloop 事件循环机制
             </h2>
             <div class="post-info">
               <span>
-                2019-01-25
+                2018-06-20
               </span>
               <span>
                 1 min read
               </span>
               
+                <a href="https://blog.wutao.xyz/tag/_iePBgyCX/" class="post-tag">
+                  # 底层原理
+                </a>
+              
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>一个野路子出生的非典型程序员，喜欢猫，发量不稀少，哈哈哈哈</p>
-<p>个人作品：</p>
-<p>iOS：</p>
-<p>短信吞噬者<br>
-垃圾短信屏蔽 App，主要通过机器学习，识别短信文本，自主屏蔽垃圾信息。</p>
-<p>Funnyfm<br>
-播客客户端，简约不简单。</p>
+                <h2 id="前言">前言</h2>
+<p>上一篇，笔者回顾了 <code>Runloop</code> 的底层数据结构，本篇文章来让我们了解一下，<code>iOS</code> 系统是怎样利用 <code>Runloop</code> 处理事件的。</p>
+<h3 id="入口函数">入口函数</h3>
 
               </div>
               <div class="toc-container">
-                
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80">前言</a>
+<ul>
+<li><a href="#%E5%85%A5%E5%8F%A3%E5%87%BD%E6%95%B0">入口函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
               </div>
             </div>
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://blog.wutao.xyz/post/tan-jiu-runloop/">
+              <h3 class="post-title">
+                探究 Runloop 底层结构 
+              </h3>
+            </a>
+          </div>
         
 
         
