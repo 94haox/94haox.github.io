@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>一些提升用户体验的 iOS 原生音视频特性 | Gridea</title>
-<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584447888271">
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584448143214">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="一些提升用户体验的 iOS 原生音视频特性 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
@@ -12,10 +12,11 @@
 
 
     <meta name="description" content="前言
-最近在开发一款泛用型播客工具 FunnyFm，在开发过程中发现了许多需要细节性的功能点，一些需要自己实现，一些 iOS 原生提供实现。
+最近在为自己开发一款泛用型播客工具 FunnyFm，在开发过程中发现了许多细节性的功能点，一些需要自己实现，一些 iOS 原生提供实现。
+  
 以下是在开发者文档中发现的一些用得着的原生特性。
 章节功能
-大多数的播客工具中，如果音频源提供 C..." />
+大多数的播客工具中，如果音频源..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -25,7 +26,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.wutao.xyz">
-  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584447888271" alt="">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584448143214" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -93,8 +94,9 @@
             <div class="post-content-wrapper">
               <div class="post-content">
                 <h1 id="前言">前言</h1>
-<p>最近在开发一款泛用型播客工具 FunnyFm，在开发过程中发现了许多需要细节性的功能点，一些需要自己实现，一些 iOS 原生提供实现。<br>
-以下是在开发者文档中发现的一些用得着的原生特性。</p>
+<p>最近在为自己开发一款泛用型播客工具 FunnyFm，在开发过程中发现了许多细节性的功能点，一些需要自己实现，一些 iOS 原生提供实现。</p>
+ <!-- more --> 
+<p>以下是在开发者文档中发现的一些用得着的原生特性。</p>
 <h3 id="章节功能">章节功能</h3>
 <p>大多数的播客工具中，如果音频源提供 <code>Chapter</code>， 那么你可以通过读取元数据中的章节信息来自定义章节选择界面。</p>
 <pre><code class="language-swift">let asset = AVAsset(url: &lt;# Asset URL #&gt;)

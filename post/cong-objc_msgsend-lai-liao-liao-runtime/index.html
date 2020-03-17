@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>从 objc_msgSend 开始探究方法执行的全部流程 | Gridea</title>
-<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584447888271">
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584448143214">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="从 objc_msgSend 开始探究方法执行的全部流程 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
@@ -16,9 +16,8 @@
 
 前言
 本文将从 objc_msgSend 开始一步步的探究方法执行的全部流程。
-
-消息机制
-objc_msgSend 函数是所有 OC 方法调用的核心引擎，它负责查找真实的类或者对象方法..." />
+ 
+对于 iOS 开发者来说，runtime 是一个无法避免的，需要深入了解的一个知识点。但是源码的复杂，..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -28,7 +27,7 @@ objc_msgSend 函数是所有 OC 方法调用的核心引擎，它负责查找真
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.wutao.xyz">
-  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584447888271" alt="">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584448143214" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -100,10 +99,11 @@ objc_msgSend 函数是所有 OC 方法调用的核心引擎，它负责查找真
 </blockquote>
 <h2 id="前言">前言</h2>
 <p>本文将从 <code>objc_msgSend</code> 开始一步步的探究方法执行的全部流程。</p>
-<!-- 对于 iOS 开发者来说，runtime 是一个无法避免的，需要深入了解的一个知识点。但是源码的复杂，文件数目的繁多对于我们理解它并不友好，找到一个好的切入点就尤为重要。 -->
+<!-- more --> 
+<p>对于 iOS 开发者来说，<strong>runtime</strong> 是一个无法避免的，需要深入了解的一个知识点。但是源码的复杂，文件数目的繁多对于我们理解它并不友好，找到一个好的切入点就尤为重要。</p>
 <h2 id="消息机制">消息机制</h2>
 <p>objc_msgSend 函数是所有 OC 方法调用的核心引擎，它负责查找真实的类或者对象方法的实现，并去执行这些方法函数，底层由汇编语言编写。</p>
-<pre><code class="language-C">objc_msgSend(id _Nullable self, SEL _Nonnull op, ...)
+<pre><code class="language-c">objc_msgSend(id _Nullable self, SEL _Nonnull op, ...)
 </code></pre>
 <p>这个方法接受多个参数， 第一个参数是消息的接受者，第二个参数是 <code>SEL</code>， 后面不定数目的参数是 <code>SEL</code> 所需的参数。<br>
 那么 <code>objc_msgSend</code> 的执行流程是什么C呢？它又涉及到哪些方法呢？</p>
