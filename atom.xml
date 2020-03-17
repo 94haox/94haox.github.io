@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.wutao.xyz</id>
     <title>Gridea</title>
-    <updated>2020-03-17T12:11:30.742Z</updated>
+    <updated>2020-03-17T12:25:01.930Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.wutao.xyz"/>
     <link rel="self" href="https://blog.wutao.xyz/atom.xml"/>
@@ -607,6 +607,176 @@ cert-1541562634350_xxx.key
 ]]></content>
     </entry>
     <entry>
+        <title type="html"><![CDATA[从 objc_msgSend 开始探究方法执行的全部流程]]></title>
+        <id>https://blog.wutao.xyz/post/cong-objc_msgsend-lai-liao-liao-runtime/</id>
+        <link href="https://blog.wutao.xyz/post/cong-objc_msgsend-lai-liao-liao-runtime/">
+        </link>
+        <updated>2018-07-08T08:47:23.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>以下对源码的分析都基于 objc4-750 版本</p>
+</blockquote>
+<h2 id="前言">前言</h2>
+<p>本文将从 <code>objc_msgSend</code> 开始一步步的探究方法执行的全部流程。</p>
+<!-- 对于 iOS 开发者来说，runtime 是一个无法避免的，需要深入了解的一个知识点。但是源码的复杂，文件数目的繁多对于我们理解它并不友好，找到一个好的切入点就尤为重要。 -->
+<h2 id="消息机制">消息机制</h2>
+<p>objc_msgSend 函数是所有 OC 方法调用的核心引擎，它负责查找真实的类或者对象方法的实现，并去执行这些方法函数，底层由汇编语言编写。</p>
+<pre><code class="language-C">objc_msgSend(id _Nullable self, SEL _Nonnull op, ...)
+</code></pre>
+<p>这个方法接受多个参数， 第一个参数是消息的接受者，第二个参数是 <code>SEL</code>， 后面不定数目的参数是 <code>SEL</code> 所需的参数。<br>
+那么 <code>objc_msgSend</code> 的执行流程是什么C呢？它又涉及到哪些方法呢？</p>
+<h2 id="执行流程">执行流程</h2>
+<p><code>objc_msgSend()</code> 的执行流程可以分为 3 大阶段：</p>
+<ul>
+<li>消息发送（方法查找）</li>
+<li>动态方法解析</li>
+<li>消息转发<br>
+这三个流程并不总会同时发生；<br>
+<em>动态方法解析</em> 取决于 <em>消息发送</em> 的结果；<br>
+<em>消息转发</em> 取决于 <em>动态解析的结果</em>；</li>
+</ul>
+<h3 id="消息发送方法查找">消息发送（方法查找）</h3>
+<p>先来看看 <strong>消息发送</strong> 的流程：</p>
+<ul>
+<li>
+<p>第一步<br>
+<code>objc_msgSend</code> 首先会判断第一个参数，也就是消息的 receiver (接受对象)，如果 receiver 为 nil，那么直接退出流程；如果不为 nil 接着下一步；</p>
+</li>
+<li>
+<p>第二步<br>
+如果 receiver 不为 nil， 去 receiver 的 class 的 cache 中查找方法，如果找到，那么执行方法，如果找不到，接着下一步；</p>
+</li>
+<li>
+<p>第三步<br>
+在 receiver.class 的 cache 中未找到方法，那么将去类的 class_rw_t 中查找方法，如果找到，那么执行方法，并将方法保存到 cache 中；如果未找到，接着下一步；</p>
+</li>
+<li>
+<p>第四步<br>
+如果在 class_rw_t 中未找到方法，那么会从 superclass 的 cache 中查找方法，如果查找到，那么执行方法，并且存储到 receiver.class 的 cache 中；如果未查找到，接着下一步；</p>
+</li>
+<li>
+<p>第五步<br>
+如果在 superclass 的 cache 中未找到，那么会从 superclass 的 class_rw_t 中查找方法，如果查找到，那么执行方法，并且存储到 receiver.class 的 cache 中；如果未查找到，接着下一步；</p>
+</li>
+<li>
+<p>第六步<br>
+如果在 receiver.class 的 superclass 中未查找到方法，那么会判断 superclass 是否有 superclass，如果有，那么会重复第四步和第五步； 如果没有，那么会进入动态方法解析流程。</p>
+</li>
+</ul>
+<p>以上就是<strong>消息发送</strong>的全部流程。那么我们通过这个流程，看看其中涉及的一些相关知识。</p>
+<p>首先 receiver , receiverClass , receiverClass.superclass 之间的相关联系，receiver 的方法是存储在什么地方的 ？<br>
+首先上一张经典图：</p>
+<figure data-type="image" tabindex="1"><img src="http://blog.leichunfeng.com/images/object_model.png" alt="" loading="lazy"></figure>
+<p>这张图是苹果官方对类的解释，每个实例（instance）都有自己的类（class），每个类也有自己的元类（meta-class）；实例，类，元类都有 isa 指针，实例的 isa 指针，指向类，类的 isa 指针指向元类，元类的 isa 指针指向基类的元类，基类的元类的指针指向自己。</p>
+<p>我们在看一下，OC 中对象的数据结构：</p>
+<pre><code class="language-C">struct objc_class : objc_object {
+    // Class ISA;
+    Class superclass;         
+    cache_t cache;             // 方法缓存
+    class_data_bits_t bits;    // 用于获取具体的类信息 
+
+    class_rw_t *data() { 
+        return bits.data();
+    }
+};
+
+struct class_data_bits_t {
+    uintptr_t bits;
+public:
+    class_rw_t* data() {
+        return (class_rw_t *)(bits &amp; FAST_DATA_MASK);
+    }
+};
+
+// 类相关读写信息
+struct class_rw_t {
+    // Be warned that Symbolication knows the layout of this structure.
+    uint32_t flags;
+    uint32_t version;
+
+    const class_ro_t *ro;
+
+    method_array_t methods;       // 方法列表
+    property_array_t properties;  // 属性列表
+    protocol_array_t protocols;   // 协议列表
+
+    Class firstSubclass;
+    Class nextSiblingClass;
+
+    char *demangledName;
+};
+
+// 类相关的只读信息，只保存了初始内容
+struct class_ro_t {
+    uint32_t flags;
+    uint32_t instanceStart;
+    uint32_t instanceSize;  // instance对象占用的内存空间
+#ifdef __LP64__
+    uint32_t reserved;
+#endif
+    const uint8_t * ivarLayout;    
+    const char * name;  
+    method_list_t * baseMethodList;  
+    protocol_list_t * baseProtocols;
+    const ivar_list_t * ivars; 
+    const uint8_t * weakIvarLayout;
+    property_list_t *baseProperties;
+    method_list_t *baseMethods() const {
+        return baseMethodList;
+    }
+};
+</code></pre>
+<p>通过上述代码和其中的一些解释，我们不难发现他们之间的联系，这里再解释一下 <code>class_ro_t</code> 和 <code>class_rw_t</code> 之间的关系。<br>
+<code>class_ro_t</code> 存储了初始的内容，是只读的，不可改。runtime 初始化时在 <code>realizeClass()</code> 函数中将其中的内容和分类中的内容合并起来放入 <code>class_rw_t</code> 中，并将 class 的 bits 指向 <code>class_rw_t</code>。</p>
+<h3 id="动态方法解析">动态方法解析</h3>
+<p>这一步是运行时的第一个对无法找到的方法的挽救措施，如果动态解析成功，那么会从 <strong>消息发送</strong>流程的第二步开始重新走发送流程，如果没有成功，那么将会进行下一步<strong>消息转发</strong>流程。<br>
+<strong>动态方法解析</strong>有下面几步：</p>
+<ul>
+<li>第一步<br>
+根据方法的类型（实例方法还是类方法）runtime 会调用：<pre><code class="language-C">+(BOOL)resolveInstanceMethod:(SEL)sel
++(BOOL)resolveClassMethod:(SEL)sel
+</code></pre>
+</li>
+</ul>
+<p>重写上述代码，动态添加方法的实现：</p>
+<pre><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types)
+</code></pre>
+<h3 id="动态消息转发">动态消息转发</h3>
+<p>如果“消息发送”阶段未找到方法的实现，且通过<strong>动态方法解析</strong>没有解决， 就进入<strong>消息转发</strong>阶段，<strong>消息转发</strong>阶段分两步进行：Fast forwarding 和 Normal forwarding。</p>
+<p><strong>Fast forwarding</strong><br>
+将消息转发给一个其它 OC 对象（找一个备用接收者）， 我们可以重写以下方法，返回一个非 receiver 的对象，来完成这一步骤：</p>
+<pre><code class="language-c">+/- (id)forwardingTargetForSelector:(SEL)sel;
+</code></pre>
+<p><strong>Normal forwarding</strong><br>
+通过实现一个完整的消息转发过程， 如果上一步没能解决未知消息，可以重写以下两个方法启动完整的消息转发：<br>
+第一个方法：我们需要在该方法中返回一个适合该未知消息的方法签名（方法签名就是对返回值类型、参数类型的描述，可以使用 Type Encodings 编码，</p>
+<pre><code class="language-c">+/- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
+// Runtime 会根据这个方法签名，创建一个NSInvocation对象（NSInvocation封装了未知消息的全部内容，包括：方法调用者 target、方法名 selector、方法参数 argument 等），然后调用第二个方法并将该NSInvocation对象作为参数传入。
+</code></pre>
+<p>第二个方法：我们可以在该方法中, 将未知消息转发给其它对象；改变未知消息的内容(如方法名、方法参数)再转发给其它对象；甚至可以定义任何逻辑。</p>
+<pre><code class="language-c">+/- (void)forwardInvocation:(NSInvocation *)invocation
+</code></pre>
+<p>如果第一个方法中没有返回方法签名，或者我们没有重写第二个方法，系统就会认为我们彻底不想处理这个消息了，这时候就会调用<code>+/- (void)doesNotRecognizeSelector:(SEL)sel</code>方法并抛出经典的 <code>crash:unrecognized selector sent to instance/class</code>，结束 objc_msgSend 的全部流程。</p>
+<pre><code>+ (id)forwardingTargetForSelector:(SEL)sel {
+    return nil;
+}
++ (NSMethodSignature *)methodSignatureForSelector:(SEL)sel {
+    _objc_fatal(&quot;+[NSObject methodSignatureForSelector:] &quot;
+                &quot;not available without CoreFoundation&quot;);
+}
++ (void)forwardInvocation:(NSInvocation *)invocation {
+    [self doesNotRecognizeSelector:(invocation ? [invocation selector] : 0)];
+}
++ (void)doesNotRecognizeSelector:(SEL)sel {
+    _objc_fatal(&quot;+[%s %s]: unrecognized selector sent to instance %p&quot;, 
+                class_getName(self), sel_getName(sel), self);
+}
+</code></pre>
+<h2 id="总结">总结</h2>
+<p>以上就是 <code>runtime</code> 中关于消息发送的所有流程。<br>
+深入了解这些流程和细节后，我们可以用它实现很多有意思的事情。</p>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[探究 Runloop 底层结构 ]]></title>
         <id>https://blog.wutao.xyz/post/tan-jiu-runloop/</id>
         <link href="https://blog.wutao.xyz/post/tan-jiu-runloop/">
@@ -922,43 +1092,6 @@ dsBridge.register(&quot;addPicture&quot;, function(data) {
 </code></pre>
 <h1 id="总结">总结</h1>
 <p>这个需求的核心就是 JS 与 原生之间的交互，只要找对下手方向，那么剩下就是码代码了。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[（译）对于 Objective-C 来说 Unit Testing 的价值是什么？]]></title>
-        <id>https://blog.wutao.xyz/post/yi-dui-yu-objective-c-lai-shuo-unit-testing-de-jie-zhi-shi-shi-me/</id>
-        <link href="https://blog.wutao.xyz/post/yi-dui-yu-objective-c-lai-shuo-unit-testing-de-jie-zhi-shi-shi-me/">
-        </link>
-        <updated>2017-09-26T02:13:55.000Z</updated>
-        <summary type="html"><![CDATA[<p>最大的问题是 “对于 Objective-C 来说 Unit Testing 的价值是什么？”</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>最大的问题是 “对于 Objective-C 来说 Unit Testing 的价值是什么？”</p>
-<!-- more -->
-<p>服务端的小伙伴会 Mock 整个数据库，仅仅为了测试一条类似于 “Hello World” 的 SQL 语句。<br>
-在 iOS 中，你需要如此的仔细吗？这大概是不需要的。<br>
-你需要将单元测试覆盖到 iOS 项目中的每一行代码吗？这毫无疑问是不需要的。</p>
-<p>那么，让我们来看下，你应该怎样决定你的测试计划。</p>
-<p>单元测试有两个目的：</p>
-<ul>
-<li>首先也是最重要的（从我的观点来说）它可以帮你保持类的小而精。</li>
-<li>其次，它可以为你提供自动化测试，这是非常有用的。</li>
-</ul>
-<p>为什么我这么说？<br>
-如果你尝试编写一个类去通过某个 API 来获取数据，你会从对它行为的一些猜测来开始开发。<br>
-使用这个类，会依赖这些假设。假如你过了几个月忘记这些假设是什么，那么如果你更改了关于网络请求的代码，你很有可能在某个地方改变了之前的逻辑。这些可能发生在你毫不知情的情况下。</p>
-<p>你应该通过手动还是自动去测试你的 App？它并不意味着你需要将单元测试覆盖整个 APP，但是在发版本之前，你应该测试一些关键之处，那么为什么还要通过手动做这些呢而不选择自动测试呢？</p>
-<p><em>Matt Gemmell</em> 曾经写过 “thou shalt suffer no bugs to ship”（发版时必须不要有任何 Bug），我认为他说的很对，并且我也是这样做的 。他也说到，无论你用哪种机制去保证在发版时没有 bug，你只是需要有一种方法。Unit Tests， UI Acceptance Tests, 或者所有的测试都通过手动解决（但是这将会花费大量时间）。 Unit Test 或者 UAT 更加迅速。</p>
-<p>上面说的所有都是 “对于 Objective-C 来说 Unit Testing 的价值是什么？” 这个话题的开场白。<br>
-让我们来思考一个好的架构的 iOS app。它被划分为三个部分： Model，View，Controller。</p>
-<p><img src="//upload-images.jianshu.io/upload_images/664484-1b495266b14976c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" loading="lazy"><br>
-426D1328D1E744999A88979FAF12C2C2.png</p>
-<p>￼<br>
-我有说 three parts？ 我的意思是 three-ish（暂时没搞清楚什么意思🤣）。 App 需要 API 的调用，你也需要写网络请求的代码。有的时候，代码会从 Model 中分离，有时候也会包含在 Model 中，在可避免的情况下它应该从不包含在 View 中，或者包含在 Controller 中（这应该永远是可避免的）。</p>
-<p>View 和 Controller 自检的相互作用不利于单元测试— 这些地方 UAT 可以帮你解决这个问题。 这篇文章并不会涉及这些。</p>
-<p>橙色的区域是单元测试最有作用的地方。Model 和网络请求代码中。</p>
-<p>你可以很容易的测试网络请求代码，去验证你第一次写它的时候关于它的假设。如果你的 Model 比较精炼，你可能不会去测试。然而，这些 models 可能在任何地方被创建和修改，所以，你应该确保测试这些代码。</p>
-<p>综上所述：单元测试 Models 和网络请求代码。如果你觉得值得，那么用 UAT 去测试其他的。可能手动测试 Views 和 Controllers 更加适合你的工作，特别是在比较小型的 app 中。</p>
-<p>最后，无论你用哪种测试，请记录它，并且编成文档。这样你就可以在发版之前手动测试它了。</p>
 ]]></content>
     </entry>
 </feed>
