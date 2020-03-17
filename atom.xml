@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.wutao.xyz</id>
     <title>Gridea</title>
-    <updated>2020-03-17T12:29:05.814Z</updated>
+    <updated>2020-03-17T12:30:28.281Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.wutao.xyz"/>
     <link rel="self" href="https://blog.wutao.xyz/atom.xml"/>
@@ -1008,11 +1008,11 @@ struct __CFRunLoopTimer {
         <updated>2018-04-08T06:58:47.000Z</updated>
         <summary type="html"><![CDATA[<h1 id="前文">前文</h1>
 <p>近期由于公司业务发展的需求，个人从 iOS开发 转为 半iOS 半前端😂。<br>
-没人带，只能自学，自学的坏处在于，有很多坑是要自己摔进去，再爬出来。</p>
+自学的坏处在于，有很多坑是要自己摔进去，再爬出来。</p>
 ]]></summary>
         <content type="html"><![CDATA[<h1 id="前文">前文</h1>
 <p>近期由于公司业务发展的需求，个人从 iOS开发 转为 半iOS 半前端😂。<br>
-没人带，只能自学，自学的坏处在于，有很多坑是要自己摔进去，再爬出来。</p>
+自学的坏处在于，有很多坑是要自己摔进去，再爬出来。</p>
 <!-- more --> 
 <h1 id="需求">需求</h1>
 <p>将一个报修界面（类似于反馈）改版，并将新版界面的实现由原生迁移到H5。如下图<br>
