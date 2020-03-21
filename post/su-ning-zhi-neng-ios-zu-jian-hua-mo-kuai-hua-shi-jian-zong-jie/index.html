@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>苏宁智能 iOS 组件化/模块化实践总结 | Gridea</title>
-<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584780726448">
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584795394344">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="苏宁智能 iOS 组件化/模块化实践总结 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
@@ -25,7 +25,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.wutao.xyz">
-  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584780726448" alt="">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584795394344" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -132,13 +132,11 @@
 <h4 id="2-解决方案">2、解决方案</h4>
 <p>为了解决以上这些问题，团队曾经进行过如下一些探索：<br>
 1、移除无用的第三方库和资源文件，减少打包时间：效果不明显；<br>
-2、整理并推动内部 Gitflow 工作流，提高协作效率：有一些效果，但由于项目过大，日常协作仍然吃力；<br>
-3、在不拆分主工程的情况下，推动项目整个 Swift 化：由于之前维护项目的前辈离职，导致目前的项目开发人员都对原代码不是十分熟悉，不敢妄加改动，加之业务迭代频繁，开发和测试资源都十分紧张，该工作工作推进十分缓慢。</p>
-<p>可以发现上述尝试的结果都不是十分理想，在与 iOS 组内大佬们进行一些沟通，听取大佬们的意见后，决定对原项目进行「组件化 / 模块化拆分」工作，它能带来如下这些好处：</p>
-<p>加快编译速度，不用再编译组件 / 模块外没有被依赖到的代码；<br>
+2、整理并推动内部 Gitflow 工作流，提高协作效率：有一些效果，但由于项目过大，日常协作仍然吃力；</p>
+<p>可以发现上述尝试的结果都不是十分理想，在经过团队会议和调研当前业内流行方案后，决定对原项目进行组件化/模块化拆分，它能带来如下这些好处：<br>
+加快编译速度，不用再编译组件/模块外没有被依赖到的代码；<br>
 便于将每个模块指定给不同负责人进行管理；<br>
 降低合并难度，减小冲突和出错概率，提高业务开发效率；<br>
-将 Swift 和 OC 代码进行分离，便于进一步 Swift 化工作的推进；<br>
 可为模块编写单元测试，提高工作效率，同时方便测试人员进行有针对性的测试。</p>
 <h2 id="目标设定">目标设定</h2>
 <ul>
@@ -148,7 +146,7 @@
 <li>CocoaPods 发布：在内网 GitLab 进行发布，并且之后对每个模块用 GitFlow 工作流进行管理和后续发布工作。</li>
 </ul>
 <h2 id="计划">计划</h2>
-<p>说到组件化 / 模块化，那么什么是组件化 / 模块化呢？组件化和模块化的区别又在哪里呢？</p>
+<p>说到组件化和模块化，那么什么是组件化、模块化呢？组件化和模块化的区别又在哪里呢？</p>
 <p>组件，就是我们对功能的封装，一个功能就是一个组件，数据库、网络、文件操作、社会化分享等等这些功能都是组件。我们之所以要搞出组件的概念，是为了能够让我们的上层业务模块能够随时依赖和调用这些基础功能。组件基本上可以分为基础功能组件、通用 UI 组件、基础业务组件等这几类。所以为了满足上述要求，组件必须具有较高的独立性、扩展性以及复用性。</p>
 <p>模块，就是对一系列有内聚性的业务进行整理，将其与其它业务进行切割、拆分，从主工程或原所在位置抽离为一个相对独立的部分。仅仅针对业务而言，比如说我们可以把订单业务独立为为一个模块，可以把个人中心独立为一个模块，把用户登录独立为一个模块等，在 App 中的体现就是一个个独立的 Git 仓库。模块化的一个好处是用到时可以搭积木，比如可以多个工程间复用同一个或几个业务模块，比小Biu音箱，小Biu扫地机器人，除了 UI 界面外它们复用了大量现有的苏宁智能的业务模块代码。</p>
 <p>经过小组会议讨论，我们的想法是将共用组件独立出来，然后直接按业务对现有主工程进行拆分大致划分如下表所示：</p>
