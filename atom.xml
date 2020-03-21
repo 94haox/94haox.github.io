@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.wutao.xyz</id>
     <title>Gridea</title>
-    <updated>2020-03-21T08:47:10.826Z</updated>
+    <updated>2020-03-21T08:48:20.503Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.wutao.xyz"/>
     <link rel="self" href="https://blog.wutao.xyz/atom.xml"/>
@@ -418,11 +418,18 @@ curl -F &quot;appId=${appId}&quot; -F &quot;versionId=${versionId}&quot; -F &quo
         <link href="https://blog.wutao.xyz/post/su-ning-zhi-neng-ios-zu-jian-hua-mo-kuai-hua-shi-jian-zong-jie/">
         </link>
         <updated>2019-04-21T06:23:19.000Z</updated>
+        <summary type="html"><![CDATA[<h1 id="前言">前言</h1>
+<blockquote>
+<p>&quot;苏宁智能&quot;是一款为智能家居打造的控制平台，有了这款应用，您可以将所有支持的智能家居品牌的设备接入到同一个 App 中，便捷的控制相应设备。</p>
+</blockquote>
+<p>本文分享苏宁智能 iOS 的组件化/模块化实践过程和自己的心得体会。</p>
+]]></summary>
         <content type="html"><![CDATA[<h1 id="前言">前言</h1>
 <blockquote>
 <p>&quot;苏宁智能&quot;是一款为智能家居打造的控制平台，有了这款应用，您可以将所有支持的智能家居品牌的设备接入到同一个 App 中，便捷的控制相应设备。</p>
 </blockquote>
 <p>本文分享苏宁智能 iOS 的组件化/模块化实践过程和自己的心得体会。</p>
+ <!-- more --> 
 <h2 id="背景分析">背景分析</h2>
 <p>苏宁智能 iOS 端代码从2018.09开始使用 Git 进行管理，代码托管在内网的 GitLab 上。项目的依赖管理工具是CocoaPods，除了 RN 模块为了动态下发进行单独管理外，其他所有的子模块都采用 Pods 库的方式引入。</p>
 <h4 id="1-现阶段存在的问题">1、现阶段存在的问题</h4>
