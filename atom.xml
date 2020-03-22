@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.wutao.xyz</id>
     <title>Gridea</title>
-    <updated>2020-03-22T07:38:39.774Z</updated>
+    <updated>2020-03-22T08:03:27.974Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.wutao.xyz"/>
     <link rel="self" href="https://blog.wutao.xyz/atom.xml"/>
@@ -378,6 +378,12 @@ end
 <p>两者启动耗时都有明显的降低。</p>
 <h1 id="总结">总结</h1>
 <p>通过本次笔者只对 pre-main 阶段进行了优化，main() 函数之后和首屏渲染成功之前的优化工作还未开始，后面计划完成后，将会有一篇文章，将整个优化点补全。</p>
+<p>相关文章推荐：<br>
+<a href="https://developer.apple.com/videos/play/wwdc2019/423/">Optimizing App Launch</a><br>
+<a href="https://developer.apple.com/videos/play/wwdc2016/406/">Optimizing App Startup Time</a><br>
+<a href="https://ming1016.github.io/2019/12/07/how-to-analyze-startup-time-cost-in-ios/">如何对 iOS 启动阶段耗时进行分析</a><br>
+<a href="https://www.ctolib.com/topics-108899.html">iOS 客户端启动速度优化</a><br>
+<a href="https://blog.automatic.com/how-we-cut-our-ios-apps-launch-time-in-half-with-this-one-cool-trick-7aca2011e2ea">How we cut our iOS app’s launch time in half (with this one cool trick)</a></p>
 ]]></content>
     </entry>
     <entry>
