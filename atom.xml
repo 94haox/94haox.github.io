@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.wutao.xyz</id>
     <title>Gridea</title>
-    <updated>2020-03-22T08:03:27.974Z</updated>
+    <updated>2020-03-22T08:19:01.732Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.wutao.xyz"/>
     <link rel="self" href="https://blog.wutao.xyz/atom.xml"/>
@@ -220,9 +220,9 @@ func applicationWillEnterForeground(_ application: UIApplication) {
         <content type="html"><![CDATA[<h1 id="前言">前言</h1>
 <p>当 App 迭代到一定阶段，业务逐渐增多，项目不断变大，启动时间优化是一个必经的阶段，这篇文章，我将从启动过程来提出几个优化点。</p>
 <!-- more -->
-<p>强烈建议观看 wwdc 2016 相关视频 <a href="https://developer.apple.com/videos/play/wwdc2016/406/">Optimizing App Startup Time</a>和2019的<a href="https://developer.apple.com/videos/play/wwdc2019/423/">Optimizing App Launch</a></p>
 <h1 id="开始">开始</h1>
-<p>先放几个启动时间对比，分别是</p>
+<p>本次优化机型基于 iPhoneX<br>
+先放几个启动时间对比，分别是</p>
 <ul>
 <li>一个新建的工程在 pre-main 期间的耗时数据</li>
 </ul>

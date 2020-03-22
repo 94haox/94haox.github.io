@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>苏宁智能的启动优化实践总结 | Gridea</title>
-<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584864205858">
+<link rel="shortcut icon" href="https://blog.wutao.xyz/favicon.ico?v=1584865139880">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://blog.wutao.xyz/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="苏宁智能的启动优化实践总结 | Gridea - Atom Feed" href="https://blog.wutao.xyz/atom.xml">
@@ -14,7 +14,11 @@
     <meta name="description" content="前言
 当 App 迭代到一定阶段，业务逐渐增多，项目不断变大，启动时间优化是一个必经的阶段，这篇文章，我将从启动过程来提出几个优化点。
 
-强烈建议观看 wwdc 2016 相关视频 Optimizing App Startup Time和2..." />
+开始
+本次优化机型基于 iPhoneX
+先放几个启动时间对比，分别是
+
+一个新建的工程在 pre-ma..." />
     <meta name="keywords" content="优化" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -24,7 +28,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://blog.wutao.xyz">
-  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584864205858" alt="">
+  <img class="avatar" src="https://blog.wutao.xyz/images/avatar.png?v=1584865139880" alt="">
   </a>
   <h1 class="site-title">
     Gridea
@@ -98,9 +102,9 @@
                 <h1 id="前言">前言</h1>
 <p>当 App 迭代到一定阶段，业务逐渐增多，项目不断变大，启动时间优化是一个必经的阶段，这篇文章，我将从启动过程来提出几个优化点。</p>
 <!-- more -->
-<p>强烈建议观看 wwdc 2016 相关视频 <a href="https://developer.apple.com/videos/play/wwdc2016/406/">Optimizing App Startup Time</a>和2019的<a href="https://developer.apple.com/videos/play/wwdc2019/423/">Optimizing App Launch</a></p>
 <h1 id="开始">开始</h1>
-<p>先放几个启动时间对比，分别是</p>
+<p>本次优化机型基于 iPhoneX<br>
+先放几个启动时间对比，分别是</p>
 <ul>
 <li>一个新建的工程在 pre-main 期间的耗时数据</li>
 </ul>
